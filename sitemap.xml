@@ -6,42 +6,52 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/backend_services_deployment/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/ceph_rbd/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/ceph_rgw/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/glance_adoption/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/keystone_adoption/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/mariadb_copy/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/other_services_adoption/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/troubleshooting/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/ceph/ceph_rbd/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/ceph/ceph_rgw/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/documentation/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/tests/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/backend_services_deployment/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/glance_adoption/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/keystone_adoption/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/mariadb_copy/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/other_services_adoption/</loc>
          <lastmod>2023-02-22</lastmod>
          <changefreq>daily</changefreq>
     </url>

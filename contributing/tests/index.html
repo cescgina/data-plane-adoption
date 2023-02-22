@@ -12,25 +12,25 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/tests/">
       
       
+        <link rel="prev" href="../documentation/">
       
-        <link rel="next" href="openstack/backend_services_deployment/">
       
-      <link rel="icon" href="assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
-        <title>OpenStack Data Plane Adoption</title>
+        <title>Tests - OpenStack Data Plane Adoption</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -46,7 +46,7 @@
       
     
     
-    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -75,7 +75,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#data-plane-adoption-procedure" class="md-skip">
+        <a href="#tests" class="md-skip">
           Skip to content
         </a>
       
@@ -93,9 +93,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -111,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              Tests
             
           </span>
         </div>
@@ -216,9 +216,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     OpenStack Data Plane Adoption
@@ -244,59 +244,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Overview
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="." class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
         Overview
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#openstack-adoption" class="md-nav__link">
-    OpenStack adoption
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-openstack-ceph-adoption" class="md-nav__link">
-    Post-OpenStack Ceph adoption
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -336,7 +288,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/backend_services_deployment/" class="md-nav__link">
+      <a href="../../openstack/backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
     </li>
@@ -350,7 +302,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/mariadb_copy/" class="md-nav__link">
+      <a href="../../openstack/mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
     </li>
@@ -364,7 +316,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/keystone_adoption/" class="md-nav__link">
+      <a href="../../openstack/keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
     </li>
@@ -378,7 +330,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/glance_adoption/" class="md-nav__link">
+      <a href="../../openstack/glance_adoption/" class="md-nav__link">
         Glance adoption
       </a>
     </li>
@@ -392,7 +344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/other_services_adoption/" class="md-nav__link">
+      <a href="../../openstack/other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
     </li>
@@ -406,7 +358,7 @@
   
   
     <li class="md-nav__item">
-      <a href="openstack/troubleshooting.md" class="md-nav__link">
+      <a href="../../openstack/troubleshooting.md" class="md-nav__link">
         None
       </a>
     </li>
@@ -455,7 +407,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ceph/ceph_rbd/" class="md-nav__link">
+      <a href="../../ceph/ceph_rbd/" class="md-nav__link">
         Ceph RBD migration
       </a>
     </li>
@@ -469,7 +421,7 @@
   
   
     <li class="md-nav__item">
-      <a href="ceph/ceph_rgw/" class="md-nav__link">
+      <a href="../../ceph/ceph_rgw/" class="md-nav__link">
         Ceph RGW migration
       </a>
     </li>
@@ -489,14 +441,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
       
       
       
@@ -505,7 +459,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Contributing
@@ -518,7 +472,7 @@
   
   
     <li class="md-nav__item">
-      <a href="contributing/documentation/" class="md-nav__link">
+      <a href="../documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -530,11 +484,59 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="contributing/tests/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Tests
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Tests
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#test-suite-information" class="md-nav__link">
+    Test suite information
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-the-tests" class="md-nav__link">
+    Running the tests
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -573,15 +575,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#openstack-adoption" class="md-nav__link">
-    OpenStack adoption
+  <a href="#test-suite-information" class="md-nav__link">
+    Test suite information
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#post-openstack-ceph-adoption" class="md-nav__link">
-    Post-OpenStack Ceph adoption
+  <a href="#running-the-tests" class="md-nav__link">
+    Running the tests
   </a>
   
 </li>
@@ -604,51 +606,34 @@
   
 
 
-<h1 id="data-plane-adoption-procedure">Data Plane Adoption procedure<a class="headerlink" href="#data-plane-adoption-procedure" title="Permanent link">#</a></h1>
-<h2 id="openstack-adoption">OpenStack adoption<a class="headerlink" href="#openstack-adoption" title="Permanent link">#</a></h2>
-<p>This is a procedure for adopting an OpenStack cloud.</p>
-<p>Perform the actions from the sub-documents in the following order:</p>
+<h1 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">#</a></h1>
+<h2 id="test-suite-information">Test suite information<a class="headerlink" href="#test-suite-information" title="Permanent link">#</a></h2>
+<p>The adoption docs repository also includes a test suite for Adoption.
+Currently only one test target is defined:</p>
 <ul>
-<li>
-<p><a href="openstack/backend_services_deployment/">Deploy podified backend services</a></p>
-</li>
-<li>
-<p><a href="openstack/mariadb_copy/">Copy MariaDB data</a></p>
-</li>
-<li>
-<p><a href="openstack/keystone_adoption/">Keystone adoption</a></p>
-</li>
-<li>
-<p><a href="openstack/glance_adoption/">Glance adoption</a></p>
-</li>
-<li>
-<p><a href="openstack/other_services_adoption/">Adoption of other services</a></p>
-</li>
+<li><code>minimal</code> - a minimal test scenario, the eventual set of services in
+  this scenario should be the "core" services needed to launch a VM
+  (without Ceph, to keep environment size requirements small and make
+  it easy to set up).</li>
 </ul>
-<p>If you face issues during adoption, check the
-<a href="openstack/troubleshooting.md">Troubleshooting</a> document for common
-problems and solutions.</p>
-<h2 id="post-openstack-ceph-adoption">Post-OpenStack Ceph adoption<a class="headerlink" href="#post-openstack-ceph-adoption" title="Permanent link">#</a></h2>
-<p>If the environment includes Ceph and some of its services are
-collocated on the Controller hosts ("internal Ceph"), then Ceph
-services need to be moved out of Controller hosts as the last step of
-the OpenStack adoption. Follow this documentation:</p>
-<ul>
-<li><a href="ceph/ceph_rbd/">Ceph RBD migration</a></li>
-<li><a href="ceph/ceph_rgw/">Ceph RGW migration</a></li>
-</ul>
-<hr />
-<h1 id="contributing">Contributing<a class="headerlink" href="#contributing" title="Permanent link">#</a></h1>
-<p>For information about contributing to the docs and how to run tests,
-see:</p>
+<p>We can add more scenarios as we go (e.g. one that includes Ceph).</p>
+<h2 id="running-the-tests">Running the tests<a class="headerlink" href="#running-the-tests" title="Permanent link">#</a></h2>
+<p>The interface between the execution infrastructure and the test suite
+is an Ansible inventory and variables files. Inventory and variable
+samples are provided. To run the tests, follow this procedure:</p>
 <ul>
 <li>
-<p><a href="contributing/documentation/">Contributing to documentation</a> -
-  how to build docs locally, docs patterns and tips.</p>
+<p>Create <code>tests/inventory.yaml</code> file by copying and editing one of the
+  included samples (e.g. <code>tests/inventory.sample-crc-vagrant.yaml</code>) to
+  provide values valid in your environment.</p>
 </li>
 <li>
-<p><a href="contributing/tests/">Tests</a> -
-  information about the test suite and how to run it.</p>
+<p>Create <code>tests/vars.yaml</code> and <code>tests/secrets.yaml</code>, likewise by
+  copying and editing the included samples (<code>tests/vars.sample.yaml</code>,
+  <code>tests/secrets.sample.yaml</code>).</p>
+</li>
+<li>
+<p>Run <code>make test-minimal</code>.</p>
 </li>
 </ul>
 
@@ -698,10 +683,10 @@ see:</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["search.suggest", "search.highlight", "search.share"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      <script src="../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>
