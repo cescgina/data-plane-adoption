@@ -6,11 +6,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/troubleshooting/</loc>
-         <lastmod>2023-02-22</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/ceph/ceph_rbd/</loc>
          <lastmod>2023-02-22</lastmod>
          <changefreq>daily</changefreq>
@@ -52,6 +47,11 @@
     </url>
     <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/other_services_adoption/</loc>
+         <lastmod>2023-02-22</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/troubleshooting/</loc>
          <lastmod>2023-02-22</lastmod>
          <changefreq>daily</changefreq>
     </url>

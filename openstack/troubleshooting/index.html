@@ -12,11 +12,15 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/troubleshooting/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/troubleshooting/">
       
       
+        <link rel="prev" href="../other_services_adoption/">
       
-      <link rel="icon" href="../assets/images/favicon.png">
+      
+        <link rel="next" href="../../ceph/ceph_rbd/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
@@ -25,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -44,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -91,9 +95,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="../images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -214,9 +218,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="../images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     OpenStack Data Plane Adoption
@@ -244,7 +248,7 @@
   
   
     <li class="md-nav__item">
-      <a href=".." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Overview
       </a>
     </li>
@@ -257,14 +261,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
       
       
       
@@ -273,7 +279,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -286,7 +292,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openstack/backend_services_deployment/" class="md-nav__link">
+      <a href="../backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
     </li>
@@ -300,7 +306,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openstack/mariadb_copy/" class="md-nav__link">
+      <a href="../mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
     </li>
@@ -314,7 +320,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openstack/keystone_adoption/" class="md-nav__link">
+      <a href="../keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
     </li>
@@ -328,7 +334,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openstack/glance_adoption/" class="md-nav__link">
+      <a href="../glance_adoption/" class="md-nav__link">
         Glance adoption
       </a>
     </li>
@@ -342,7 +348,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../openstack/other_services_adoption/" class="md-nav__link">
+      <a href="../other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
     </li>
@@ -354,11 +360,52 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../openstack/troubleshooting.md" class="md-nav__link">
-        None
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Troubleshooting
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Troubleshooting
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#errimagepull-due-to-missing-authentication" class="md-nav__link">
+    ErrImagePull due to missing authentication
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -405,7 +452,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ceph/ceph_rbd/" class="md-nav__link">
+      <a href="../../ceph/ceph_rbd/" class="md-nav__link">
         Ceph RBD migration
       </a>
     </li>
@@ -419,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ceph/ceph_rgw/" class="md-nav__link">
+      <a href="../../ceph/ceph_rgw/" class="md-nav__link">
         Ceph RGW migration
       </a>
     </li>
@@ -468,7 +515,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/documentation/" class="md-nav__link">
+      <a href="../../contributing/documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -482,7 +529,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../contributing/tests/" class="md-nav__link">
+      <a href="../../contributing/tests/" class="md-nav__link">
         Tests
       </a>
     </li>
@@ -580,7 +627,7 @@ type of authentication, check the <a href="https://access.redhat.com/RegistryAut
   <small>
     
       Last update:
-      2023-02-15
+      2023-02-22
     
   </small>
 </div>
@@ -621,10 +668,10 @@ type of authentication, check the <a href="https://access.redhat.com/RegistryAut
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
+      <script src="../../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>
