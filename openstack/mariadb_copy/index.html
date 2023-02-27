@@ -707,6 +707,11 @@ MARIADB_IMAGE=quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
 EXTERNAL_MARIADB_IP=192.168.24.3
 EXTERNAL_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
 PODIFIED_DB_ROOT_PASSWORD=12345678
+
+# ssh commands to reach controller machines
+CONTROLLER1_SSH=&quot;ssh -F ~/director_standalone/vagrant_ssh_config vagrant@standalone&quot;
+CONTROLLER2_SSH=&quot;:&quot;
+CONTROLLER3_SSH=&quot;:&quot;
 </code></pre></div>
 <h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
 <ul>
@@ -734,14 +739,7 @@ data migrated for the data-plane adoption procedure.</p>
 <p>1- Connect to all the controller nodes and stop the control
 plane services.</p>
 <p>2- Stop the services.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Configure SSH variables to stop the services</span>
-<span class="c1"># in each controller node. For example:</span>
-
-<span class="nv">CONTROLLER1_SSH</span><span class="o">=</span><span class="s2">&quot;ssh -F </span><span class="nv">$ENV_DIR</span><span class="s2">/director_standalone/vagrant_ssh_config vagrant@standalone&quot;</span>
-<span class="nv">CONTROLLER2_SSH</span><span class="o">=</span><span class="s2">&quot;:&quot;</span>
-<span class="nv">CONTROLLER3_SSH</span><span class="o">=</span><span class="s2">&quot;:&quot;</span>
-
-<span class="c1"># Update the services list to be stoped</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update the services list to be stoped</span>
 
 <span class="nv">ServicesToStop</span><span class="o">=(</span><span class="s2">&quot;tripleo_horizon.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_keystone.service&quot;</span>
@@ -806,7 +804,7 @@ done
   <small>
     
       Last update:
-      2023-02-23
+      2023-02-27
     
   </small>
 </div>
