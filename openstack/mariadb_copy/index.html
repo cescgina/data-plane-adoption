@@ -21,7 +21,7 @@
         <link rel="next" href="../keystone_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.15">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -691,7 +691,7 @@ cluster.</p>
 </li>
 <li>
 <p><em>Note that this routability requirement may change in the
-  future, e.g. we may require routability from original MariaDB to
+  future, e.g. we may require routability from the original MariaDB to
   podified MariaDB</em>.</p>
 </li>
 </ul>
@@ -699,7 +699,7 @@ cluster.</p>
 </ul>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
 <p>Define the shell variables used in the steps below. The values are
-just illustrative, use values which are correct for your environment:</p>
+just illustrative, use values that are correct for your environment:</p>
 <div class="highlight"><pre><span></span><code>PODIFIED_MARIADB_IP=$(oc get -o yaml pod mariadb-openstack | grep podIP: | awk &#39;{ print $2; }&#39;)
 MARIADB_IMAGE=quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
 
@@ -728,7 +728,7 @@ PODIFIED_DB_ROOT_PASSWORD=12345678
     mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
 </code></pre></div>
 <h2 id="procedure-stopping-control-plane-services">Procedure - stopping control plane services<a class="headerlink" href="#procedure-stopping-control-plane-services" title="Permanent link">#</a></h2>
-<p>From each controller node it is necessary to stop the
+<p>From each controller node, it is necessary to stop the
 control-plane services to avoid inconsistencies in the
 data migrated for the data-plane adoption procedure.</p>
 <p>1- Connect to all the controller nodes and stop the control
@@ -806,7 +806,7 @@ done
   <small>
     
       Last update:
-      2023-02-21
+      2023-02-23
     
   </small>
 </div>

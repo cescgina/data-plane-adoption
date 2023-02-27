@@ -21,7 +21,7 @@
         <link rel="next" href="../../contributing/documentation/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.15">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -903,13 +903,13 @@ RGW migration.</p>
 <ul>
 <li>vlan30 represents the Storage Network, where the new RGW instances should be
   started on the CephStorage nodes</li>
-<li>br-ex represents the External Network, which is where, in the current
+<li>br-ex represents the External Network, which is where in the current
   environment, haproxy has the frontend VIP assigned</li>
 </ul>
 <h2 id="prerequisite-check-the-frontend-network-controller-nodes">Prerequisite: check the frontend network (Controller nodes)<a class="headerlink" href="#prerequisite-check-the-frontend-network-controller-nodes" title="Permanent link">#</a></h2>
 <p>Identify the network that we previously had in haproxy and propagate it (via
 TripleO) to the CephStorage nodes. This network is used to reserve a new VIP
-that will be owned by Ceph and used as the entrypoint for the RGW service.</p>
+that will be owned by Ceph and used as the entry point for the RGW service.</p>
 <p>ssh into <code>controller-0</code> and check the current HaProxy configuration until we
 find <code>ceph_rgw</code> section:</p>
 <div class="highlight"><pre><span></span><code>$ less /var/lib/config-data/puppet-generated/haproxy/etc/haproxy/haproxy.cfg
@@ -940,7 +940,7 @@ listen ceph_rgw
 </code></pre></div>
 <p>As described in the previous section, the check on controller-0 shows that we
 are exposing the services using the external network, which is not present in
-the CephStorage nodes, and we  need to propagate it via TripleO.</p>
+the CephStorage nodes, and we need to propagate it via TripleO.</p>
 <h2 id="propagate-the-haproxy-frontend-network-to-cephstorage-nodes">Propagate the <code>HaProxy</code> frontend network to <code>CephStorage</code> nodes<a class="headerlink" href="#propagate-the-haproxy-frontend-network-to-cephstorage-nodes" title="Permanent link">#</a></h2>
 <p>Change the nic template used to define the ceph-storage network interfaces and
 add the new config section.</p>
@@ -1059,7 +1059,7 @@ controller-2   192.168.24.38  _admin mon mgr
 (external_deployment_steps), and a cephadm compatible spec is generated in
 <code>/home/ceph-admin/specs/rgw</code> from the <a href="https://github.com/openstack/tripleo-ansible/blob/master/tripleo_ansible/ansible_plugins/modules/ceph_mkspec.py">ceph_mkspec</a> ansible module.
 Find and patch the RGW spec, specifying the right placement using the labels
-approach and change the the rgw backend port to <strong>8090</strong> to avoid conflicts
+approach, and change the rgw backend port to <strong>8090</strong> to avoid conflicts
 with the <a href="https://github.com/openstack/tripleo-ansible/blob/master/tripleo_ansible/roles/tripleo_cephadm/tasks/rgw.yaml#L26-L30">Ceph Ingress Daemon</a> (*)</p>
 <div class="highlight"><pre><span></span><code>[root@controller-0 heat-admin]# cat rgw
 
@@ -1155,9 +1155,9 @@ Query 172.17.3.81
 </code></pre></div>
 <h3 id="note">NOTE<a class="headerlink" href="#note" title="Permanent link">#</a></h3>
 <p>In case RGW backends are migrated in the CephStorage nodes, there’s no
-“internalAPI” network(this is not true in case of HCI). Reconfig the RGW
+“internalAPI” network(this is not true in the case of HCI). Reconfig the RGW
 keystone endpoint, pointing to the external Network that has been propagated
-(see previous section)</p>
+(see the previous section)</p>
 <div class="highlight"><pre><span></span><code>[ceph: root@controller-0 /]# ceph config dump | grep keystone
 global   basic rgw_keystone_url  http://172.16.1.111:5000
 
@@ -1168,7 +1168,7 @@ global   basic rgw_keystone_url  http://172.16.1.111:5000
 this point will point to the old RGW backends, resulting in a wrong, not
 working configuration.
 Since we’re going to deploy the <a href="https://github.com/openstack/tripleo-ansible/blob/master/tripleo_ansible/ansible_plugins/modules/ceph_mkspec.py">Ceph Ingress Daemon</a>, the first thing to do
-is remove the existing <code>ceph_rgw</code> config, cleanup the config created by TripleO
+is remove the existing <code>ceph_rgw</code> config, clean up the config created by TripleO
 and restart the service to make sure other services are not affected by this
 change.</p>
 <p>ssh  on each Controller node and remove the following is the section from
@@ -1203,7 +1203,7 @@ haproxy-bundle successfully restarted
 <div class="highlight"><pre><span></span><code>[root@controller-0 ~]# ss -antop | grep 8080
 [root@controller-0 ~]#
 </code></pre></div>
-<p>And the swift cli should fail at this point:</p>
+<p>And the swift CLI should fail at this point:</p>
 <div class="highlight"><pre><span></span><code>(overcloud) [root@cephstorage-0 ~]# swift list
 
 HTTPConnectionPool(host=&#39;10.0.0.103&#39;, port=8080): Max retries exceeded with url: /swift/v1/AUTH_852f24425bb54fa896476af48cbe35d3?format=json (Caused by NewConnectionError(&#39;&lt;urllib3.connection.HTTPConnection object at 0x7fc41beb0430&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;))
@@ -1332,7 +1332,7 @@ Worker Balance
   <small>
     
       Last update:
-      2023-02-22
+      2023-02-23
     
   </small>
 </div>

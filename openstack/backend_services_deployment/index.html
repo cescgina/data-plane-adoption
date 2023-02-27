@@ -21,7 +21,7 @@
         <link rel="next" href="../mariadb_copy/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.15">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -652,9 +652,9 @@
 
 <h1 id="backend-services-deployment">Backend services deployment<a class="headerlink" href="#backend-services-deployment" title="Permanent link">#</a></h1>
 <p>The following instructions create OpenStackControlPlane CR with
-MariaDB and RabbitMQ deployed, and other services disabled. This will
+MariaDB and RabbitMQ deployed, and all the other services disabled. This will
 be the foundation of the podified control plane.</p>
-<p>In subsequent steps we'll import the original databases and then add
+<p>In subsequent steps, we'll import the original databases and then add
 podified OpenStack control plane services.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
@@ -719,7 +719,7 @@ make input
 </code></pre></div>
 <ul>
 <li>Set service account passwords in <code>osp-secret</code> to match the service
-  account passwords from original deployment:</li>
+  account passwords from the original deployment:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>oc set data secret/osp-secret &quot;CinderPassword=$CINDER_PASSWORD&quot;
 oc set data secret/osp-secret &quot;GlancePassword=$GLANCE_PASSWORD&quot;
@@ -779,7 +779,7 @@ EOF
   <small>
     
       Last update:
-      2023-02-21
+      2023-02-23
     
   </small>
 </div>

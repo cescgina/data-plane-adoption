@@ -21,7 +21,7 @@
         <link rel="next" href="../ceph_rgw/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.15">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ffa9267a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.113286f1.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -712,9 +712,9 @@ nodes for an HCI environment or dedicated storage nodes in all the remaining
 use cases).</p>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">#</a></h2>
 <ul>
-<li>Ceph is &gt;= 5 and managed by cephadm/orchestrator</li>
-<li>Ceph NFS (ganesha) migrated from a <a href="https://bugzilla.redhat.com/show_bug.cgi?id=2044910">TripleO based deployment to cephadm</a></li>
-<li>Both the Ceph public and cluster networks are propagated, via TripleO, to the target nodes</li>
+<li>Ceph is &gt;= 5 and managed by cephadm/orchestrator.</li>
+<li>Ceph NFS (ganesha) migrated from a <a href="https://bugzilla.redhat.com/show_bug.cgi?id=2044910">TripleO based deployment to cephadm</a>.</li>
+<li>Both the Ceph public and cluster networks are propagated, via TripleO, to the target nodes.</li>
 <li>Ceph Mons need to keep their IPs (to avoid cold migration).</li>
 </ul>
 <h2 id="scenario-1-migrate-mon-and-mgr-from-controller-nodes">SCENARIO 1: Migrate mon and mgr from controller nodes<a class="headerlink" href="#scenario-1-migrate-mon-and-mgr-from-controller-nodes" title="Permanent link">#</a></h2>
@@ -725,18 +725,18 @@ mon and mgr daemons. For the purposes of this POC, we'll deploy a ceph cluster
 with only mon, mgrs, and osds to simulate the environment a customer will be in
 before starting the migration.
 The goal of the first POC is to ensure that:
-- We can keep the mon IP addresses moving them to the CephStorage nodes
-- We can drain the existing controller nodes and shutting them down
+- We can keep the mon IP addresses moving them to the CephStorage nodes.
+- We can drain the existing controller nodes and shut them down.
 - We can deploy additional monitors to the existing nodes, promoting them as
   _admin nodes that can be used by administrators to manage the ceph cluster
-  and perform day2 operations against it
-- We can keep the cluster operational during the migration</p>
+  and perform day2 operations against it.
+- We can keep the cluster operational during the migration.</p>
 <h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h3>
 <p>The Storage Nodes should be configured to have both <strong>storage</strong> and <strong>storage_mgmt</strong>
 network to make sure we can use both Ceph public and cluster networks.</p>
 <p>This step is the only one where the interaction with TripleO is required. From
 17+ we don’t have to run any stack update, however, we have commands that
-should be performed to run os-net-config on the baremetal node and configure
+should be performed to run os-net-config on the bare-metal node and configure
 additional networks.</p>
 <p>Make sure the network is defined in metalsmith.yaml for the CephStorageNodes:</p>
 <div class="highlight"><pre><span></span><code>- name: CephStorage
@@ -784,10 +784,10 @@ controller nodes.</p>
     --ceph-spec ~/ceph_spec.yaml
 </code></pre></div>
 <p><strong>Note</strong>:</p>
-<p>The ceph_spec.yaml, which is the OSP generated description of the ceph cluster,
+<p>The ceph_spec.yaml, which is the OSP-generated description of the ceph cluster,
 will be used, later in the process, as the basic template required by cephadm
-to update the status/info of the daemons</p>
-<p>Check the status of the cluster</p>
+to update the status/info of the daemons.</p>
+<p>Check the status of the cluster:</p>
 <div class="highlight"><pre><span></span><code>[ceph: root@oc0-controller-0 /]# ceph -s
   cluster:
     id:     f6ec3ebe-26f7-56c8-985d-eb974e8e08e3
@@ -868,9 +868,9 @@ CONTAINER ID  IMAGE                                                             
 CONTAINER ID  IMAGE       COMMAND     CREATED     STATUS      PORTS       NAMES
 </code></pre></div>
 <p><strong>Note:</strong>
-cephadm rm-cluster on a node which is not part of the cluster anymore has the
+cephadm rm-cluster on a node that is not part of the cluster anymore has the
 effect of removing all the containers and doing some cleanup on the filesystem.</p>
-<p>Before shutting the oc0-controller-1 down, move the ip address (on the same
+<p>Before shutting the oc0-controller-1 down, move the IP address (on the same
 network) to the oc0-ceph-0 node:</p>
 <div class="highlight"><pre><span></span><code>mon_host = [v2:172.16.11.54:3300/0,v1:172.16.11.54:6789/0] [v2:172.16.11.121:3300/0,v1:172.16.11.121:6789/0] [v2:172.16.11.205:3300/0,v1:172.16.11.205:6789/0]
 
@@ -902,7 +902,7 @@ network) to the oc0-ceph-0 node:</p>
 8: vlan12    inet 172.16.12.46/24 brd 172.16.12.255 scope global vlan12\       valid_lft forever preferred_lft forever
 </code></pre></div>
 <p>Poweroff oc0-controller-1.</p>
-<p>Add the new mon on oc0-ceph-0 using the old ip address:</p>
+<p>Add the new mon on oc0-ceph-0 using the old IP address:</p>
 <div class="highlight"><pre><span></span><code>[ceph: root@oc0-controller-0 /]# ceph orch daemon add mon oc0-ceph-0:172.16.11.121
 Deployed mon.oc0-ceph-0 on host &#39;oc0-ceph-0&#39;
 </code></pre></div>
@@ -910,7 +910,7 @@ Deployed mon.oc0-ceph-0 on host &#39;oc0-ceph-0&#39;
 <div class="highlight"><pre><span></span><code>b581dc8bbb78  quay.io/ceph/daemon@sha256:320c364dcc8fc8120e2a42f54eb39ecdba12401a2546763b7bef15b02ce93bc4  -n mon.oc0-ceph-0...  24 seconds ago  Up 24 seconds ago              ceph-f6ec3ebe-26f7-56c8-985d-eb974e8e08e3-mon-oc0-ceph-0
 </code></pre></div>
 <p>On the cephadm shell, backup the existing ceph_spec.yaml, edit the spec
-removing any oc0-controller-1 entry, and replace it with oc0-ceph-0:</p>
+removing any oc0-controller-1 entry, and replacing it with oc0-ceph-0:</p>
 <div class="highlight"><pre><span></span><code>cp ceph_spec.yaml ceph_spec.yaml.bkp # backup the ceph_spec.yaml file
 
 [ceph: root@oc0-controller-0 specs]# diff -u ceph_spec.yaml.bkp ceph_spec.yaml
@@ -1020,7 +1020,7 @@ osd.default_drive_group               8  2m ago     69s  oc0-ceph-0;oc0-ceph-1
   <small>
     
       Last update:
-      2023-02-22
+      2023-02-23
     
   </small>
 </div>
