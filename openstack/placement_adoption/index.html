@@ -12,21 +12,27 @@
         <meta name="author" content="OpenStack Team">
       
       
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/placement_adoption/">
       
       
-      <link rel="icon" href="/data-plane-adoption/assets/images/favicon.png">
+        <link rel="prev" href="../glance_adoption/">
+      
+      
+        <link rel="next" href="../other_services_adoption/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.2">
     
     
       
-        <title>OpenStack Data Plane Adoption</title>
+        <title>Placement adoption - OpenStack Data Plane Adoption</title>
       
     
     
-      <link rel="stylesheet" href="/data-plane-adoption/assets/stylesheets/main.7bf56d0a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7bf56d0a.min.css">
       
         
-        <link rel="stylesheet" href="/data-plane-adoption/assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -42,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("/data-plane-adoption/",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -70,6 +76,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#placement-adoption" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -86,9 +97,9 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/data-plane-adoption/." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-header__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="/data-plane-adoption/images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -104,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Placement adoption
             
           </span>
         </div>
@@ -209,9 +220,9 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/data-plane-adoption/." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
+    <a href="../.." title="OpenStack Data Plane Adoption" class="md-nav__button md-logo" aria-label="OpenStack Data Plane Adoption" data-md-component="logo">
       
-  <img src="/data-plane-adoption/images/openstack-logo.png" alt="logo">
+  <img src="../../images/openstack-logo.png" alt="logo">
 
     </a>
     OpenStack Data Plane Adoption
@@ -239,7 +250,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         Overview
       </a>
     </li>
@@ -252,14 +263,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
       
       
       
@@ -268,7 +281,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -281,7 +294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/backend_services_deployment/" class="md-nav__link">
+      <a href="../backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
     </li>
@@ -295,7 +308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/mariadb_copy/" class="md-nav__link">
+      <a href="../mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
     </li>
@@ -309,7 +322,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/keystone_adoption/" class="md-nav__link">
+      <a href="../keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
     </li>
@@ -323,7 +336,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/glance_adoption/" class="md-nav__link">
+      <a href="../glance_adoption/" class="md-nav__link">
         Glance adoption
       </a>
     </li>
@@ -335,11 +348,73 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/placement_adoption/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Placement adoption
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Placement adoption
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-placement-adoption" class="md-nav__link">
+    Procedure - Placement adoption
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-checks" class="md-nav__link">
+    Post-checks
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -351,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/other_services_adoption/" class="md-nav__link">
+      <a href="../other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
     </li>
@@ -365,7 +440,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/openstack/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         Troubleshooting
       </a>
     </li>
@@ -414,7 +489,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/ceph/ceph_rbd/" class="md-nav__link">
+      <a href="../../ceph/ceph_rbd/" class="md-nav__link">
         Ceph RBD migration
       </a>
     </li>
@@ -428,7 +503,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/ceph/ceph_rgw/" class="md-nav__link">
+      <a href="../../ceph/ceph_rgw/" class="md-nav__link">
         Ceph RGW migration
       </a>
     </li>
@@ -477,7 +552,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/contributing/documentation/" class="md-nav__link">
+      <a href="../../contributing/documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -491,7 +566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/data-plane-adoption/contributing/tests/" class="md-nav__link">
+      <a href="../../contributing/tests/" class="md-nav__link">
         Tests
       </a>
     </li>
@@ -522,6 +597,44 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-placement-adoption" class="md-nav__link">
+    Procedure - Placement adoption
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-checks" class="md-nav__link">
+    Post-checks
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -533,8 +646,68 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+  
+  
+
+
+<h1 id="placement-adoption">Placement adoption<a class="headerlink" href="#placement-adoption" title="Permanent link">#</a></h1>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<ul>
+<li>Previous Adoption steps completed. Notably, the service databases
+  must already be imported into the podified MariaDB.</li>
+</ul>
+<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
+<p>(There are no shell variables necessary currently.)</p>
+<h2 id="procedure-placement-adoption">Procedure - Placement adoption<a class="headerlink" href="#procedure-placement-adoption" title="Permanent link">#</a></h2>
+<ul>
+<li>Patch OpenStackControlPlane to deploy Placement:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc patch openstackcontrolplane openstack --type=merge --patch &#39;
+spec:
+  placement:
+    enabled: true
+    template:
+      containerImage: quay.io/tripleozedcentos9/openstack-placement-api:current-tripleo
+      databaseInstance: openstack
+      secret: osp-secret
+&#39;
+</code></pre></div>
+<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
+<ul>
+<li>See that Placement endpoints are defined and pointing to the
+  podified FQDNs and that Placement API responds.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>export OS_CLIENT_CONFIG_FILE=clouds-adopted.yaml
+export OS_CLOUD=adopted
+
+openstack endpoint list | grep placement
+
+
+# Without OpenStack CLI placement plugin installed:
+PLACEMENT_PUBLIC_URL=$(openstack endpoint list -c &#39;Service Name&#39; -c &#39;Service Type&#39; -c URL | grep placement | grep public | awk &#39;{ print $6; }&#39;)
+curl &quot;$PLACEMENT_PUBLIC_URL&quot;
+
+# With OpenStack CLI placement plugin installed:
+openstack resource class list
+</code></pre></div>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      2023-03-06
+    
+  </small>
+</div>
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -566,10 +739,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "/data-plane-adoption/", "features": ["search.suggest", "search.highlight", "search.share"], "search": "/data-plane-adoption/assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="/data-plane-adoption/assets/javascripts/bundle.fc8c2696.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fc8c2696.min.js"></script>
       
     
   </body>
