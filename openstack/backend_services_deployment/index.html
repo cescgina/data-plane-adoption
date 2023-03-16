@@ -21,7 +21,7 @@
         <link rel="next" href="../mariadb_copy/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.2">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
@@ -29,7 +29,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7bf56d0a.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.c4a75a56.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
@@ -749,7 +749,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
 <li>Deploy OpenStackControlPlane. <strong>Make sure to only enable MariaDB and
   RabbitMQ services. All other services must be disabled.</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
+<p><code>oc apply -f - &lt;&lt;EOF
 apiVersion: core.openstack.org/v1beta1
 kind: OpenStackControlPlane
 metadata:
@@ -757,22 +757,37 @@ metadata:
 spec:
   secret: osp-secret
   storageClass: local-storage
-  mariadb:
-    template:
-      containerImage: quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
-      storageRequest: 500M
-  rabbitmq:
-    template:
-      replicas: 1
-
   keystone:
     enabled: false
-  cinder:
+  mariadb:
+    templates:
+      openstack:
+        containerImage: quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
+        storageRequest: 500M
+  rabbitmq:
+    templates:
+      rabbitmq:
+        replicas: 1
+  placement:
     enabled: false
   glance:
     enabled: false
-  placement:
+  cinder:
     enabled: false
+    template:
+      cinderAPI:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-api:current-tripleo
+      cinderScheduler:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-scheduler:current-tripleo
+      cinderBackup:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-backup:current-tripleo
+      cinderVolumes:
+        volume1:
+          containerImage: quay.io/tripleozedcentos9/openstack-cinder-volume:current-tripleo
+          replicas: 1
   ovn:
     enabled: false
   ovs:
@@ -781,8 +796,23 @@ spec:
     enabled: false
   nova:
     enabled: false
-EOF
-</code></pre></div>
+  ironic:
+    enabled: false
+    template:
+      databaseInstance: openstack
+      ironicAPI:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-ironic-api:current-tripleo
+      ironicConductors:
+      - replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-ironic-conductor:current-tripleo
+        pxeContainerImage: quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo
+        storageRequest: 10G
+      ironicInspector:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-ironic-inspector:current-tripleo
+        pxeContainerImage: quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo
+EOF</code></p>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
 <ul>
 <li>Check that MariaDB is running.</li>
@@ -795,7 +825,7 @@ EOF
   <small>
     
       Last update:
-      2023-02-23
+      2023-03-13
     
   </small>
 </div>
@@ -839,7 +869,7 @@ EOF
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.fc8c2696.min.js"></script>
+      <script src="../../assets/javascripts/bundle.efa0ade1.min.js"></script>
       
     
   </body>
