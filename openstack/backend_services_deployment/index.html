@@ -391,6 +391,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../ovn_adoption/" class="md-nav__link">
+        OVN data migration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
@@ -749,70 +763,70 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
 <li>Deploy OpenStackControlPlane. <strong>Make sure to only enable MariaDB and
   RabbitMQ services. All other services must be disabled.</strong></li>
 </ul>
-<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
-apiVersion: core.openstack.org/v1beta1
-kind: OpenStackControlPlane
-metadata:
-  name: openstack
-spec:
-  secret: osp-secret
-  storageClass: local-storage
-  keystone:
-    enabled: false
-  mariadb:
-    templates:
-      openstack:
-        containerImage: quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
-        storageRequest: 500M
-  rabbitmq:
-    templates:
-      rabbitmq:
-        replicas: 1
-  placement:
-    enabled: false
-  glance:
-    enabled: false
-  cinder:
-    enabled: false
-    template:
-      cinderAPI:
-        replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-cinder-api:current-tripleo
-      cinderScheduler:
-        replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-cinder-scheduler:current-tripleo
-      cinderBackup:
-        replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-cinder-backup:current-tripleo
-      cinderVolumes:
-        volume1:
-          containerImage: quay.io/tripleozedcentos9/openstack-cinder-volume:current-tripleo
-          replicas: 1
-  ovn:
-    enabled: false
-  ovs:
-    enabled: false
-  neutron:
-    enabled: false
-  nova:
-    enabled: false
-  ironic:
-    enabled: false
-    template:
-      databaseInstance: openstack
-      ironicAPI:
-        replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-ironic-api:current-tripleo
-      ironicConductors:
-      - replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-ironic-conductor:current-tripleo
-        pxeContainerImage: quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo
-        storageRequest: 10G
-      ironicInspector:
-        replicas: 1
-        containerImage: quay.io/tripleozedcentos9/openstack-ironic-inspector:current-tripleo
-        pxeContainerImage: quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo
-EOF
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc apply -f - &lt;&lt;EOF</span>
+<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.openstack.org/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenStackControlPlane</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osp-secret</span>
+<span class="w">  </span><span class="nt">storageClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-storage</span>
+<span class="w">  </span><span class="nt">keystone</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">mariadb</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">openstack</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo</span>
+<span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500M</span>
+<span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">rabbitmq</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">placement</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">glance</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cinderAPI</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-api:current-tripleo</span>
+<span class="w">      </span><span class="nt">cinderScheduler</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-scheduler:current-tripleo</span>
+<span class="w">      </span><span class="nt">cinderBackup</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-backup:current-tripleo</span>
+<span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">volume1</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-volume:current-tripleo</span>
+<span class="w">          </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">ovs</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">neutron</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">nova</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">  </span><span class="nt">ironic</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">databaseInstance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
+<span class="w">      </span><span class="nt">ironicAPI</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-api:current-tripleo</span>
+<span class="w">      </span><span class="nt">ironicConductors</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-conductor:current-tripleo</span>
+<span class="w">        </span><span class="nt">pxeContainerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo</span>
+<span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
+<span class="w">      </span><span class="nt">ironicInspector</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-inspector:current-tripleo</span>
+<span class="w">        </span><span class="nt">pxeContainerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo</span>
+<span class="l l-Scalar l-Scalar-Plain">EOF</span>
 </code></pre></div>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
 <ul>
@@ -826,7 +840,7 @@ EOF
   <small>
     
       Last update:
-      2023-03-17
+      2023-03-20
     
   </small>
 </div>

@@ -12,18 +12,20 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/tests/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/ovn_adoption/">
       
       
-        <link rel="prev" href="../documentation/">
+        <link rel="prev" href="../mariadb_copy/">
       
+      
+        <link rel="next" href="../keystone_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.3">
     
     
       
-        <title>Tests - OpenStack Data Plane Adoption</title>
+        <title>OVN data migration - OpenStack Data Plane Adoption</title>
       
     
     
@@ -75,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#tests" class="md-skip">
+        <a href="#ovn-data-migration" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Tests
+              OVN data migration
             
           </span>
         </div>
@@ -261,14 +263,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
       
       
       
@@ -277,7 +281,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -290,7 +294,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/backend_services_deployment/" class="md-nav__link">
+      <a href="../backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
     </li>
@@ -304,7 +308,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/mariadb_copy/" class="md-nav__link">
+      <a href="../mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
     </li>
@@ -316,11 +320,73 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../openstack/ovn_adoption/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          OVN data migration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         OVN data migration
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rationale" class="md-nav__link">
+    Rationale
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    Procedure
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -332,7 +398,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/keystone_adoption/" class="md-nav__link">
+      <a href="../keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
     </li>
@@ -346,7 +412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/glance_adoption/" class="md-nav__link">
+      <a href="../glance_adoption/" class="md-nav__link">
         Glance adoption
       </a>
     </li>
@@ -360,7 +426,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/placement_adoption/" class="md-nav__link">
+      <a href="../placement_adoption/" class="md-nav__link">
         Placement adoption
       </a>
     </li>
@@ -374,7 +440,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/other_services_adoption/" class="md-nav__link">
+      <a href="../other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
     </li>
@@ -388,7 +454,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../openstack/troubleshooting/" class="md-nav__link">
+      <a href="../troubleshooting/" class="md-nav__link">
         Troubleshooting
       </a>
     </li>
@@ -471,16 +537,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
       
       
       
@@ -489,7 +553,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Contributing
@@ -502,7 +566,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../documentation/" class="md-nav__link">
+      <a href="../../contributing/documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -514,59 +578,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Tests
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../contributing/tests/" class="md-nav__link">
         Tests
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#test-suite-information" class="md-nav__link">
-    Test suite information
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#running-the-tests" class="md-nav__link">
-    Running the tests
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -605,15 +621,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#test-suite-information" class="md-nav__link">
-    Test suite information
+  <a href="#rationale" class="md-nav__link">
+    Rationale
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-the-tests" class="md-nav__link">
-    Running the tests
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure" class="md-nav__link">
+    Procedure
   </a>
   
 </li>
@@ -636,43 +666,120 @@
   
 
 
-<h1 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">#</a></h1>
-<h2 id="test-suite-information">Test suite information<a class="headerlink" href="#test-suite-information" title="Permanent link">#</a></h2>
-<p>The adoption docs repository also includes a test suite for Adoption.
-Currently, only one test target is defined:</p>
+<h1 id="ovn-data-migration">OVN data migration<a class="headerlink" href="#ovn-data-migration" title="Permanent link">#</a></h1>
+<p>This document describes how to move OVN northbound and southbound databases
+from the original OpenStack deployment to ovsdb-server instances running in the
+OpenShift cluster.</p>
+<h2 id="rationale">Rationale<a class="headerlink" href="#rationale" title="Permanent link">#</a></h2>
+<p>While it may be argued that the podified Neutron ML2/OVN driver and OVN northd
+service will reconstruct the databases on startup, the reconstruction may be
+time consuming on large existing clusters. The procedure below allows to speed
+up data migration and avoid unnecessary data plane disruptions due to
+incomplete OpenFlow table contents.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
-<li><code>minimal</code> - a minimal test scenario, the eventual set of services in
-  this scenario should be the "core" services needed to launch a VM
-  (without Ceph, to keep environment size requirements small and make
-  it easy to set up).</li>
+<li>Make sure the previous Adoption steps have been performed successfully.</li>
+<li>The OpenStackControlPlane resource must be already created at this point.</li>
+<li>NetworkAttachmentDefinition CRDs for the original cluster are already
+    defined. Specifically, <em>openstack/internalapi</em> network is defined.</li>
+<li>Podified MariaDB and RabbitMQ may already run. Neutron and OVN are not
+    running yet.</li>
+<li>Original OVN is older or equal to the podified version.</li>
+<li>There must be network routability between:<ul>
+<li>The adoption host and the original OVN.</li>
+<li>The adoption host and the podified OVN.</li>
 </ul>
-<p>We can add more scenarios as we go (e.g. one that includes Ceph).</p>
-<h2 id="running-the-tests">Running the tests<a class="headerlink" href="#running-the-tests" title="Permanent link">#</a></h2>
-<p>The interface between the execution infrastructure and the test suite
-is an Ansible inventory and variables files. Inventory and variable
-samples are provided. To run the tests, follow this procedure:</p>
-<ul>
-<li>
-<p>Create <code>tests/inventory.yaml</code> file by copying and editing one of the
-  included samples (e.g. <code>tests/inventory.sample-crc-vagrant.yaml</code>) to
-  provide values valid in your environment.</p>
-</li>
-<li>
-<p>Create <code>tests/vars.yaml</code> and <code>tests/secrets.yaml</code>, likewise by
-  copying and editing the included samples (<code>tests/vars.sample.yaml</code>,
-  <code>tests/secrets.sample.yaml</code>).</p>
-</li>
-<li>
-<p>Run <code>make test-minimal</code>.</p>
 </li>
 </ul>
+<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
+<p>Define the shell variables used in the steps below. The values are
+just illustrative, use values that are correct for your environment:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">OVSDB_IMAGE</span><span class="o">=</span>quay.io/tripleozedcentos9/openstack-ovn-base:current-tripleo
+<span class="nv">EXTERNAL_OVSDB_IP</span><span class="o">=</span><span class="m">172</span>.17.1.49
+
+<span class="c1"># ssh commands to reach the original controller machines</span>
+<span class="nv">CONTROLLER_SSH</span><span class="o">=</span><span class="s2">&quot;ssh -F ~/director_standalone/vagrant_ssh_config vagrant@standalone&quot;</span>
+
+<span class="c1"># ssh commands to reach the original compute machines</span>
+<span class="nv">COMPUTE_SSH</span><span class="o">=</span><span class="s2">&quot;ssh -F ~/director_standalone/vagrant_ssh_config vagrant@standalone&quot;</span>
+</code></pre></div>
+<h2 id="procedure">Procedure<a class="headerlink" href="#procedure" title="Permanent link">#</a></h2>
+<ul>
+<li>Stop OVN northd on all original cluster controllers.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="si">${</span><span class="nv">CONTROLLER_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span>tripleo_ovn_cluster_northd.service
+</code></pre></div>
+<ul>
+<li>Backup OVN databases.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">client</span><span class="o">=</span><span class="s2">&quot;podman run -i --rm --userns=keep-id -u </span><span class="nv">$UID</span><span class="s2"> -v </span><span class="nv">$PWD</span><span class="s2">:</span><span class="nv">$PWD</span><span class="s2">:z,rw -w </span><span class="nv">$PWD</span><span class="s2"> </span><span class="nv">$OVSDB_IMAGE</span><span class="s2"> ovsdb-client&quot;</span>
+<span class="si">${</span><span class="nv">client</span><span class="si">}</span><span class="w"> </span>backup<span class="w"> </span>tcp:<span class="nv">$EXTERNAL_OVSDB_IP</span>:6641<span class="w"> </span>&gt;<span class="w"> </span>ovs-nb.db
+<span class="si">${</span><span class="nv">client</span><span class="si">}</span><span class="w"> </span>backup<span class="w"> </span>tcp:<span class="nv">$EXTERNAL_OVSDB_IP</span>:6642<span class="w"> </span>&gt;<span class="w"> </span>ovs-sb.db
+</code></pre></div>
+<ul>
+<li>Start podified OVN services prior to database import.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc patch openstackcontrolplane openstack --type=merge --patch &#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
+<span class="err">   </span><span class="w w-Error"> </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">ovnDBCluster</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">ovndbcluster-nb</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-nb-db-server:current-tripleo</span>
+<span class="w">          </span><span class="nt">dbType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NB</span>
+<span class="w">          </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
+<span class="w">          </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
+<span class="w">        </span><span class="nt">ovndbcluster-sb</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-sb-db-server:current-tripleo</span>
+<span class="w">          </span><span class="nt">dbType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SB</span>
+<span class="w">          </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
+<span class="w">          </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
+<span class="w">      </span><span class="nt">ovnNorthd</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-northd:current-tripleo</span>
+<span class="w">        </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
+<span class="s">&#39;</span>
+</code></pre></div>
+<ul>
+<li>Fetch podified OVN IP addresses.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nv">PODIFIED_OVSDB_NB_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>po<span class="w"> </span>ovsdbserver-nb-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/networks-status}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;map(. | select(.name==&quot;openstack/internalapi&quot;))[0].ips[0]&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="k">)</span>
+<span class="nv">PODIFIED_OVSDB_SB_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>po<span class="w"> </span>ovsdbserver-sb-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/networks-status}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;map(. | select(.name==&quot;openstack/internalapi&quot;))[0].ips[0]&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="k">)</span>
+</code></pre></div>
+<ul>
+<li>Restore database backup to podified OVN database servers.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>podman<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>--userns<span class="o">=</span>keep-id<span class="w"> </span>-u<span class="w"> </span><span class="nv">$UID</span><span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:<span class="nv">$PWD</span>:z,rw<span class="w"> </span>-w<span class="w"> </span><span class="nv">$PWD</span><span class="w"> </span><span class="nv">$OVSDB_IMAGE</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ovsdb-client restore tcp:</span><span class="nv">$PODIFIED_OVSDB_NB_IP</span><span class="s2">:6641 &lt; ovs-nb.db&quot;</span>
+podman<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--rm<span class="w"> </span>--userns<span class="o">=</span>keep-id<span class="w"> </span>-u<span class="w"> </span><span class="nv">$UID</span><span class="w"> </span>-v<span class="w"> </span><span class="nv">$PWD</span>:<span class="nv">$PWD</span>:z,rw<span class="w"> </span>-w<span class="w"> </span><span class="nv">$PWD</span><span class="w"> </span><span class="nv">$OVSDB_IMAGE</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;ovsdb-client restore tcp:</span><span class="nv">$PODIFIED_OVSDB_SB_IP</span><span class="s2">:6642 &lt; ovs-sb.db&quot;</span>
+</code></pre></div>
+<ul>
+<li>Check that podified OVN databases contain objects from backup, e.g.:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovsdbserver-nb-0<span class="w"> </span>--<span class="w"> </span>ovn-nbctl<span class="w"> </span>show
+oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovsdbserver-sb-0<span class="w"> </span>--<span class="w"> </span>ovn-sbctl<span class="w"> </span>list<span class="w"> </span>Chassis
+</code></pre></div>
+<ul>
+<li>Switch ovn-remote on compute nodes to point to the new podified database.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovn_controller<span class="w"> </span>ovs-vsctl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>open<span class="w"> </span>.<span class="w"> </span>external_ids:ovn-remote<span class="o">=</span>tcp:<span class="nv">$PODIFIED_OVSDB_SB_IP</span>:6642
+</code></pre></div>
+<ul>
+<li>Reset RAFT state for all compute ovn-controller instances.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovn_controller<span class="w"> </span>ovn-appctl<span class="w"> </span>-t<span class="w"> </span>ovn-controller<span class="w"> </span>sb-cluster-state-reset
+</code></pre></div>
+<ul>
+<li>Alternatively, just restart ovn-controller on original compute nodes.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>tripleo_ovn_controller.service
+</code></pre></div>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-02-23
+      2023-03-17
     
   </small>
 </div>

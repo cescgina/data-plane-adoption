@@ -51,6 +51,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/ovn_adoption/</loc>
+         <lastmod>2023-03-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/placement_adoption/</loc>
          <lastmod>2023-03-20</lastmod>
          <changefreq>daily</changefreq>
