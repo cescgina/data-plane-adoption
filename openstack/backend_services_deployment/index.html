@@ -749,7 +749,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
 <li>Deploy OpenStackControlPlane. <strong>Make sure to only enable MariaDB and
   RabbitMQ services. All other services must be disabled.</strong></li>
 </ul>
-<p><code>oc apply -f - &lt;&lt;EOF
+<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
 apiVersion: core.openstack.org/v1beta1
 kind: OpenStackControlPlane
 metadata:
@@ -812,7 +812,8 @@ spec:
         replicas: 1
         containerImage: quay.io/tripleozedcentos9/openstack-ironic-inspector:current-tripleo
         pxeContainerImage: quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo
-EOF</code></p>
+EOF
+</code></pre></div>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
 <ul>
 <li>Check that MariaDB is running.</li>
@@ -825,7 +826,7 @@ EOF</code></p>
   <small>
     
       Last update:
-      2023-03-13
+      2023-03-17
     
   </small>
 </div>
