@@ -782,7 +782,7 @@ plane services.</p>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the OpenStack services&quot;</span>
 
 <span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the service: </span><span class="nv">$service</span><span class="s2"> in each controller node&quot;</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the </span><span class="nv">$service</span><span class="s2"> in each controller node&quot;</span>
 <span class="w">    </span><span class="nv">$CONTROLLER1_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
 <span class="w">    </span><span class="nv">$CONTROLLER2_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
 <span class="w">    </span><span class="nv">$CONTROLLER3_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
@@ -803,7 +803,7 @@ cd ~/adoption-db
 <div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE bash &lt;&lt;EOF
 
 mysql -h $EXTERNAL_MARIADB_IP -u root &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot; -N -e &#39;show databases&#39; | while read dbname; do
-    echo &quot;Dumping \$dbname&quot;
+    echo &quot;Exporting \$dbname&quot;
     mysqldump -h $EXTERNAL_MARIADB_IP -uroot &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot; \
         --single-transaction --complete-insert --skip-lock-tables --lock-tables=0 \
         --databases &quot;\$dbname&quot; \
@@ -816,7 +816,7 @@ EOF
 <li>Restore the databases from .sql files into the podified MariaDB:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>for dbname in cinder glance keystone nova_api nova_cell0 nova ovs_neutron placement; do
-    echo &quot;Restoring $dbname&quot;
+    echo &quot;Importing $dbname&quot;
     oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
        mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; &lt; &quot;$dbname.sql&quot;
 done
@@ -834,7 +834,7 @@ done
   <small>
     
       Last update:
-      2023-03-17
+      2023-03-20
     
   </small>
 </div>

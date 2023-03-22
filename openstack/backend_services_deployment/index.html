@@ -771,61 +771,58 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
 <span class="nt">spec</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osp-secret</span>
 <span class="w">  </span><span class="nt">storageClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-storage</span>
+
 <span class="w">  </span><span class="nt">keystone</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">mariadb</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">openstack</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo</span>
 <span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500M</span>
+
 <span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">rabbitmq</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">rabbitmq-cell1</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+
 <span class="w">  </span><span class="nt">placement</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">glance</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">glanceAPIInternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">      </span><span class="nt">glanceAPIExternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">cinderAPI</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-api:current-tripleo</span>
-<span class="w">      </span><span class="nt">cinderScheduler</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-scheduler:current-tripleo</span>
-<span class="w">      </span><span class="nt">cinderBackup</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-backup:current-tripleo</span>
-<span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">volume1</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-cinder-volume:current-tripleo</span>
-<span class="w">          </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 <span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">ovs</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">neutron</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">nova</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">ironic</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">databaseInstance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
-<span class="w">      </span><span class="nt">ironicAPI</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-api:current-tripleo</span>
-<span class="w">      </span><span class="nt">ironicConductors</span><span class="p">:</span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-conductor:current-tripleo</span>
-<span class="w">        </span><span class="nt">pxeContainerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo</span>
-<span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
-<span class="w">      </span><span class="nt">ironicInspector</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-inspector:current-tripleo</span>
-<span class="w">        </span><span class="nt">pxeContainerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ironic-pxe:current-tripleo</span>
+<span class="w">      </span><span class="nt">ironicConductors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 <span class="l l-Scalar l-Scalar-Plain">EOF</span>
 </code></pre></div>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
