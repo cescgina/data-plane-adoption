@@ -432,6 +432,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
+    Database schema version mismatch when restoring OVN databases
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -606,6 +613,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
+    Database schema version mismatch when restoring OVN databases
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -628,9 +642,13 @@
 <p>This document contains information about various issues you might face
 and how to solve them.</p>
 <h2 id="errimagepull-due-to-missing-authentication">ErrImagePull due to missing authentication<a class="headerlink" href="#errimagepull-due-to-missing-authentication" title="Permanent link">#</a></h2>
-<p>The deployed containers pull the images from private containers
-registries that can potentially return authentication errors like:
-<code>Failed to pull image "registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0": rpc error: code = Unknown desc = unable to retrieve auth token: invalid username/password: unauthorized: Please login to the Red Hat Registry using your Customer Portal credentials.</code></p>
+<p>The deployed containers pull the images from private containers registries that
+can potentially return authentication errors like:</p>
+<div class="highlight"><pre><span></span><code>Failed to pull image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;:
+rpc error: code = Unknown desc = unable to retrieve auth token: invalid
+username/password: unauthorized: Please login to the Red Hat Registry using
+your Customer Portal credentials.
+</code></pre></div>
 <p>An example of a failed pod:</p>
 <div class="highlight"><pre><span></span><code>  Normal   Scheduled       3m40s                  default-scheduler  Successfully assigned openstack/rabbitmq-server-0 to worker0
   Normal   AddedInterface  3m38s                  multus             Add eth0 [10.101.0.41/23] from ovn-kubernetes
@@ -640,24 +658,60 @@ registries that can potentially return authentication errors like:
   Warning  Failed          2m5s (x4 over 3m38s)   kubelet            Error: ErrImagePull
   Normal   BackOff         110s (x7 over 3m38s)   kubelet            Back-off pulling image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;
 </code></pre></div>
-<p>To solve this issue we need to get a valid pull-secret from the official <a href="https://console.redhat.com/openshift/install/pull-secret">Red Hat console site</a>,
-store this pull secret locally in a machine with access to the Kubernetes API (service node), and then run:</p>
+<p>To solve this issue we need to get a valid pull-secret from the official <a href="https://console.redhat.com/openshift/install/pull-secret">Red
+Hat console site</a>,
+store this pull secret locally in a machine with access to the Kubernetes API
+(service node), and then run:</p>
 <div class="highlight"><pre><span></span><code>oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=&lt;pull_secret_location.json&gt;
 </code></pre></div>
-<p>The previous command will make available the authentication information in all the cluster's compute nodes,
-then trigger a new pod deployment to pull the container image with:</p>
+<p>The previous command will make available the authentication information in all
+the cluster's compute nodes, then trigger a new pod deployment to pull the
+container image with:</p>
 <div class="highlight"><pre><span></span><code>kubectl delete pod rabbitmq-server-0 -n openstack
 </code></pre></div>
-<p>And the pod should be able to pull the image successfully.
-For more information about what container registries requires what
-type of authentication, check the <a href="https://access.redhat.com/RegistryAuthentication">official docs</a>.</p>
+<p>And the pod should be able to pull the image successfully.  For more
+information about what container registries requires what type of
+authentication, check the <a href="https://access.redhat.com/RegistryAuthentication">official
+docs</a>.</p>
+<h2 id="database-schema-version-mismatch-when-restoring-ovn-databases">Database schema version mismatch when restoring OVN databases<a class="headerlink" href="#database-schema-version-mismatch-when-restoring-ovn-databases" title="Permanent link">#</a></h2>
+<p>You may see the following errors when trying to restore OVN databases:</p>
+<div class="highlight"><pre><span></span><code>ovsdb-client: backup schema has version &quot;7.0.0&quot; but database schema has version &quot;6.3.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
+ovsdb-client: backup schema has version &quot;20.27.0&quot; but database schema has version &quot;20.23.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
+</code></pre></div>
+<p>This happens because your podified cluster is running OVN version that is older
+than the version running in the original cluster. You may work this issue
+around by pulling OVN images from the original cluster registry into podified
+cluster.</p>
+<p>You may have to first enable insecure registries in your podified cluster:</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>image.config.openshift.io/cluster<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">spec:</span>
+<span class="s1">  registrySources:</span>
+<span class="s1">    insecureRegistries:</span>
+<span class="s1">    - 192.168.130.1</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+<p>Then update OVN services to pull images from the original registry:</p>
+<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>openstackcontrolplane<span class="w"> </span>openstack<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">spec:</span>
+<span class="s1">  ovn:</span>
+<span class="s1">    template:</span>
+<span class="s1">      ovnDBCluster:</span>
+<span class="s1">        ovndbcluster-nb:</span>
+<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
+<span class="s1">        ovndbcluster-sb:</span>
+<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-sb-db-server:17.1_20230130.1</span>
+<span class="s1">      ovnNorthd:</span>
+<span class="s1">        containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+<p>Now repeat database <code>ovsdb-client restore</code> commands. They should succeed.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-02-23
+      2023-03-22
     
   </small>
 </div>

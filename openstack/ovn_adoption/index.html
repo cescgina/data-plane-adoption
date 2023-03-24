@@ -763,10 +763,17 @@ oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-i
 </ul>
 <div class="highlight"><pre><span></span><code><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovn_controller<span class="w"> </span>ovs-vsctl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>open<span class="w"> </span>.<span class="w"> </span>external_ids:ovn-remote<span class="o">=</span>tcp:<span class="nv">$PODIFIED_OVSDB_SB_IP</span>:6642
 </code></pre></div>
+<p>You should now see the following warning in the <code>ovn_controller</code> container logs:</p>
+<div class="highlight"><pre><span></span><code>2023-03-16T21:40:35Z|03095|ovsdb_cs|WARN|tcp:172.17.1.50:6642: clustered database server has stale data; trying another server
+</code></pre></div>
 <ul>
 <li>Reset RAFT state for all compute ovn-controller instances.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>podman<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ovn_controller<span class="w"> </span>ovn-appctl<span class="w"> </span>-t<span class="w"> </span>ovn-controller<span class="w"> </span>sb-cluster-state-reset
+</code></pre></div>
+<p>This should complete connection of the controller process to the new remote. See in logs:</p>
+<div class="highlight"><pre><span></span><code>2023-03-16T21:42:31Z|03134|main|INFO|Resetting southbound database cluster state
+2023-03-16T21:42:33Z|03135|reconnect|INFO|tcp:172.17.1.50:6642: connected
 </code></pre></div>
 <ul>
 <li>Alternatively, just restart ovn-controller on original compute nodes.</li>
@@ -779,7 +786,7 @@ oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-i
   <small>
     
       Last update:
-      2023-03-17
+      2023-03-22
     
   </small>
 </div>
