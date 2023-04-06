@@ -12,20 +12,16 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/backend_services_deployment/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/edpm_adoption/">
       
       
-        <link rel="prev" href="../..">
-      
-      
-        <link rel="next" href="../mariadb_copy/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.5">
     
     
       
-        <title>Backend services deployment - OpenStack Data Plane Adoption</title>
+        <title>EDPM adoption - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#backend-services-deployment" class="md-skip">
+        <a href="#edpm-adoption" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Backend services deployment
+              EDPM adoption
             
           </span>
         </div>
@@ -263,16 +259,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
       
@@ -281,7 +275,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -292,80 +286,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Backend services deployment
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-backend-services-deployment" class="md-nav__link">
-    Procedure - backend services deployment
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -649,8 +574,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-backend-services-deployment" class="md-nav__link">
-    Procedure - backend services deployment
+  <a href="#procedure-edpm-adoption" class="md-nav__link">
+    Procedure - EDPM adoption
   </a>
   
 </li>
@@ -680,156 +605,174 @@
   
 
 
-<h1 id="backend-services-deployment">Backend services deployment<a class="headerlink" href="#backend-services-deployment" title="Permanent link">#</a></h1>
-<p>The following instructions create OpenStackControlPlane CR with
-MariaDB and RabbitMQ deployed, and all the other services disabled. This will
-be the foundation of the podified control plane.</p>
-<p>In subsequent steps, we'll import the original databases and then add
-podified OpenStack control plane services.</p>
+<h1 id="edpm-adoption">EDPM adoption<a class="headerlink" href="#edpm-adoption" title="Permanent link">#</a></h1>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
-<li>
-<p>The cloud which we want to adopt is up and running. It's on
-  OpenStack Wallaby release.</p>
-</li>
-<li>
-<p>The <code>openstack-operator</code> is deployed, but <code>OpenStackControlPlane</code> is
-  <strong>not</strong> deployed.</p>
-</li>
+<li>Previous Adoption steps completed.</li>
 </ul>
-<p>For developer/CI environments, the openstack operator can be deployed
-  by running <code>make openstack</code> inside
-  <a href="https://github.com/openstack-k8s-operators/install_yamls">install_yamls</a>
-  repo.</p>
-<p>For production environments, the deployment method will likely be
-  different.</p>
-<ul>
-<li>There are free PVs available to be claimed (for MariaDB and RabbitMQ).</li>
-</ul>
-<p>For developer/CI environments driven by install_yamls, make sure
-  you've run <code>make crc_storage</code>.</p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
-<ul>
-<li>Set the desired admin password for the podified deployment. This can
-  be the original deployment's admin password or something else.</li>
-</ul>
-<div class="highlight"><pre><span></span><code>ADMIN_PASSWORD=SomePassword
-</code></pre></div>
-<ul>
-<li>Set service password variables to match the original deployment.
-  Database passwords can differ in podified environment, but
-  synchronizing the service account passwords is a required step.</li>
-</ul>
-<p>E.g. in developer environments with TripleO Standalone, the
-  passwords can be extracted like this:</p>
-<div class="highlight"><pre><span></span><code>CINDER_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; CinderPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-GLANCE_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; GlancePassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-IRONIC_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; IronicPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-NEUTRON_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; NeutronPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-NOVA_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; NovaPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-OCTAVIA_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; OctaviaPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-PLACEMENT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; PlacementPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-</code></pre></div>
+<p>(There are no shell variables necessary currently.)</p>
 <h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
-<h2 id="procedure-backend-services-deployment">Procedure - backend services deployment<a class="headerlink" href="#procedure-backend-services-deployment" title="Permanent link">#</a></h2>
+<h2 id="procedure-edpm-adoption">Procedure - EDPM adoption<a class="headerlink" href="#procedure-edpm-adoption" title="Permanent link">#</a></h2>
 <ul>
-<li>Create OSP secret.</li>
+<li>Create a <a href="https://kubernetes.io/docs/concepts/configuration/secret/#ssh-authentication-secrets">ssh authentication secret</a> for the EDPM nodes:</li>
 </ul>
-<p>The procedure for this will vary, but in developer/CI environments
-  we use install_yamls:</p>
-<div class="highlight"><pre><span></span><code># in install_yamls
-make input
+<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
+  apiVersion: v1
+  kind: Secret
+  metadata:
+      name: dataplane-adoption-secret
+      namespace: openstack
+  data:
+      ssh-privatekey: |
+  $(cat {{ edpm_privatekey_path }} | base64 | sed &#39;s/^/        /&#39;)
+  EOF
 </code></pre></div>
 <ul>
-<li>If the <code>$ADMIN_PASSWORD</code> is different than the already set password
-  in <code>osp-secret</code>, amend the <code>AdminPassword</code> key in the <code>osp-secret</code>
-  correspondingly:</li>
+<li>Deploy OpenStackDataPlane:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>oc set data secret/osp-secret &quot;AdminPassword=$ADMIN_PASSWORD&quot;
+<p><div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
+  apiVersion: dataplane.openstack.org/v1beta1
+  kind: OpenStackDataPlane
+  metadata:
+    name: openstack
+    namespace: openstack
+  spec:
+    deployStrategy:
+      deploy: true
+    nodes:
+      standalone:
+        ansibleHost: {{ edpm_node_ip }}
+        deployStrategy:
+          deploy: false
+        hostName: standalone
+        node:
+          ansibleSSHPrivateKeySecret: dataplane-adoption-secret
+          ansibleVars: |
+            ctlplane_ip: {{ edpm_node_ip }}
+            internal_api_ip: 172.17.0.100
+            storage_ip: 172.18.0.100
+            tenant_ip: 172.10.0.100
+            fqdn_internal_api: &#39;{{&#39;{{ ansible_fqdn }}&#39;}}&#39;
+        openStackAnsibleEERunnerImage: quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
+        role: edpmadoption
+    roles:
+      edpmadoption:
+        deployStrategy:
+          deploy: false
+        networkAttachments:
+          - ctlplane
+          - internalapi
+          - storage
+          - tenant
+        env:
+          - name: ANSIBLE_FORCE_COLOR
+            value: &quot;True&quot;
+          - name: ANSIBLE_ENABLE_TASK_DEBUGGER
+            value: &quot;True&quot;
+          - name: ANSIBLE_VERBOSITY
+            value: &quot;2&quot;
+        nodeTemplate:
+          ansiblePort: 22
+          ansibleSSHPrivateKeySecret: dataplane-adoption-secret
+          ansibleUser: root
+          ansibleVars: |
+            service_net_map:
+              nova_api_network: internal_api
+              nova_libvirt_network: internal_api
+            # edpm_network_config
+            # Default nic config template for a EDPM compute node
+            # These vars are edpm_network_config role vars
+            edpm_network_config_template: templates/single_nic_vlans/single_nic_vlans.j2
+            edpm_network_config_hide_sensitive_logs: false
+            # These vars are for the network config templates themselves and are
+            # considered EDPM network defaults.
+            neutron_physical_bridge_name: br-ctlplane
+            neutron_public_interface_name: eth1
+            ctlplane_mtu: 1500
+            ctlplane_subnet_cidr: 24
+            ctlplane_gateway_ip: 192.168.121.1
+            ctlplane_host_routes:
+            - ip_netmask: 0.0.0.0/0
+              next_hop: 192.168.121.1
+            external_mtu: 1500
+            external_vlan_id: 44
+            external_cidr: &#39;24&#39;
+            external_host_routes: []
+            internal_api_mtu: 1500
+            internal_api_vlan_id: 20
+            internal_api_cidr: &#39;24&#39;
+            internal_api_host_routes: []
+            storage_mtu: 1500
+            storage_vlan_id: 21
+            storage_cidr: &#39;24&#39;
+            storage_host_routes: []
+            tenant_mtu: 1500
+            tenant_vlan_id: 22
+            tenant_cidr: &#39;24&#39;
+            tenant_host_routes: []
+            role_networks:
+            - InternalApi
+            - Storage
+            - Tenant
+            networks_lower:
+              External: external
+              InternalApi: internal_api
+              Storage: storage
+              Tenant: tenant
+            # edpm_nodes_validation
+            edpm_nodes_validation_validate_controllers_icmp: false
+            edpm_nodes_validation_validate_gateway_icmp: false
+
+            edpm_ovn_metadata_agent_DEFAULT_transport_url: rabbit://default_user_-secret@rabbitmq.openstack.svc:5672
+            edpm_ovn_metadata_agent_metadata_agent_ovn_ovn_sb_connection: tcp:172.17.0.31:6642
+            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_nova_metadata_host: 127.0.0.1
+            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_metadata_proxy_shared_secret: 12345678
+            edpm_ovn_metadata_agent_DEFAULT_bind_host: 127.0.0.1
+            edpm_chrony_ntp_servers:
+            - clock.corp.redhat.com
+
+            ctlplane_dns_nameservers:
+            - 192.168.121.1
+            dns_search_domains: []
+            edpm_ovn_dbs:
+            - 172.17.0.31
+
+            edpm_ovn_controller_agent_image: quay.io/tripleozedcentos9/openstack-ovn-controller:current-tripleo
+            edpm_iscsid_image: quay.io/tripleozedcentos9/openstack-iscsid:current-tripleo
+            edpm_logrotate_crond_image: quay.io/tripleozedcentos9/openstack-cron:current-tripleo
+            edpm_nova_compute_container_image: quay.io/tripleozedcentos9/openstack-nova-compute:current-tripleo
+            edpm_nova_libvirt_container_image: quay.io/tripleozedcentos9/openstack-nova-libvirt:current-tripleo
+            edpm_ovn_metadata_agent_image: quay.io/tripleozedcentos9/openstack-neutron-metadata-agent-ovn:current-tripleo
+
+            gather_facts: false
+            enable_debug: false
+            verbosity: 4
+            # edpm firewall, change the allowed CIDR if needed
+            edpm_sshd_configure_firewall: true
+            edpm_sshd_allowed_ranges: [&#39;192.168.122.0/24&#39;]
+            # SELinux module
+            edpm_selinux_mode: permissive
+            edpm_hosts_entries_undercloud_hosts_entries: []
+            # edpm_hosts_entries role
+            edpm_hosts_entries_extra_hosts_entries:
+            - 172.17.0.80 glance-internal.openstack.svc neutron-internal.openstack.svc cinder-internal.openstack.svc nova-internal.openstack.svc placement-internal.openstack.svc keystone-internal.openstack.svc
+            - 172.17.0.85 rabbitmq.openstack.svc
+            - 172.17.0.86 rabbitmq-cell1.openstack.svc
+            edpm_hosts_entries_vip_hosts_entries: []
+            hosts_entries: []
+            hosts_entry: []
+          managed: false
+          managementNetwork: ctlplane
+        openStackAnsibleEERunnerImage: quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
+  EOF
 </code></pre></div>
-<ul>
-<li>Set service account passwords in <code>osp-secret</code> to match the service
-  account passwords from the original deployment:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc set data secret/osp-secret &quot;CinderPassword=$CINDER_PASSWORD&quot;
-oc set data secret/osp-secret &quot;GlancePassword=$GLANCE_PASSWORD&quot;
-oc set data secret/osp-secret &quot;IronicPassword=$IRONIC_PASSWORD&quot;
-oc set data secret/osp-secret &quot;NeutronPassword=$NEUTRON_PASSWORD&quot;
-oc set data secret/osp-secret &quot;NovaPassword=$NOVA_PASSWORD&quot;
-oc set data secret/osp-secret &quot;OctaviaPassword=$OCTAVIA_PASSWORD&quot;
-oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
-</code></pre></div>
-<ul>
-<li>Deploy OpenStackControlPlane. <strong>Make sure to only enable MariaDB and
-  RabbitMQ services. All other services must be disabled.</strong></li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc apply -f - &lt;&lt;EOF</span>
-<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.openstack.org/v1beta1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenStackControlPlane</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osp-secret</span>
-<span class="w">  </span><span class="nt">storageClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-storage</span>
-
-<span class="w">  </span><span class="nt">keystone</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">mariadb</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">openstack</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo</span>
-<span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500M</span>
-
-<span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">rabbitmq</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">      </span><span class="nt">rabbitmq-cell1</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-
-<span class="w">  </span><span class="nt">placement</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">glance</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">glanceAPIInternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">      </span><span class="nt">glanceAPIExternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">ovs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">neutron</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">nova</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">ironic</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">ironicConductors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-<span class="l l-Scalar l-Scalar-Plain">EOF</span>
-</code></pre></div>
+Note: Role vars will be inherited by nodes, more details <a href="https://openstack-k8s-operators.github.io/dataplane-operator/inheritance/">here</a></p>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
 <ul>
-<li>Check that MariaDB is running.</li>
+<li>See that ansible jobs are running:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>oc get pod mariadb-openstack -o jsonpath=&#39;{.status.phase}{&quot;\n&quot;}&#39;
+<div class="highlight"><pre><span></span><code>while true; do oc logs -f `oc get pods | grep dataplane-deployment | grep Running| cut -d &#39; &#39; -f1` 2&gt;/dev/null || echo -n .; sleep 1; done
 </code></pre></div>
 
   <hr>
@@ -837,7 +780,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
   <small>
     
       Last update:
-      2023-03-20
+      2023-04-05
     
   </small>
 </div>
