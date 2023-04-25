@@ -12,20 +12,20 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/backend_services_deployment/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment/">
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../documentation/">
       
       
-        <link rel="next" href="../mariadb_copy/">
+        <link rel="next" href="../tests/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
     
     
       
-        <title>Backend services deployment - OpenStack Data Plane Adoption</title>
+        <title>Development environment - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#backend-services-deployment" class="md-skip">
+        <a href="#development-environment" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Backend services deployment
+              Development environment
             
           </span>
         </div>
@@ -269,16 +269,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
       
@@ -287,7 +285,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -298,80 +296,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Backend services deployment
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../openstack/backend_services_deployment/" class="md-nav__link">
         Backend services deployment
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-backend-services-deployment" class="md-nav__link">
-    Procedure - backend services deployment
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -383,7 +312,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../mariadb_copy/" class="md-nav__link">
+      <a href="../../openstack/mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
     </li>
@@ -397,7 +326,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../ovn_adoption/" class="md-nav__link">
+      <a href="../../openstack/ovn_adoption/" class="md-nav__link">
         OVN data migration
       </a>
     </li>
@@ -411,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../keystone_adoption/" class="md-nav__link">
+      <a href="../../openstack/keystone_adoption/" class="md-nav__link">
         Keystone adoption
       </a>
     </li>
@@ -425,7 +354,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../glance_adoption/" class="md-nav__link">
+      <a href="../../openstack/glance_adoption/" class="md-nav__link">
         Glance adoption
       </a>
     </li>
@@ -439,7 +368,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../placement_adoption/" class="md-nav__link">
+      <a href="../../openstack/placement_adoption/" class="md-nav__link">
         Placement adoption
       </a>
     </li>
@@ -453,7 +382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../other_services_adoption/" class="md-nav__link">
+      <a href="../../openstack/other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
     </li>
@@ -467,7 +396,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../troubleshooting/" class="md-nav__link">
+      <a href="../../openstack/troubleshooting/" class="md-nav__link">
         Troubleshooting
       </a>
     </li>
@@ -550,14 +479,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
       
       
       
@@ -566,7 +497,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_4">
           <span class="md-nav__icon md-icon"></span>
           Contributing
@@ -579,7 +510,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/documentation/" class="md-nav__link">
+      <a href="../documentation/" class="md-nav__link">
         Documentation
       </a>
     </li>
@@ -591,11 +522,73 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../contributing/development_environment/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Development environment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Development environment
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#environment-prep" class="md-nav__link">
+    Environment prep
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-of-crc-with-network-isolation" class="md-nav__link">
+    Deployment of CRC with network isolation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-of-171-standalone-with-network-isolation" class="md-nav__link">
+    Deployment of 17.1 Standalone with network isolation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cleanup-of-the-environment" class="md-nav__link">
+    Cleanup of the environment
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -607,7 +600,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../contributing/tests/" class="md-nav__link">
+      <a href="../tests/" class="md-nav__link">
         Tests
       </a>
     </li>
@@ -648,36 +641,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+  <a href="#environment-prep" class="md-nav__link">
+    Environment prep
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
+  <a href="#deployment-of-crc-with-network-isolation" class="md-nav__link">
+    Deployment of CRC with network isolation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
+  <a href="#deployment-of-171-standalone-with-network-isolation" class="md-nav__link">
+    Deployment of 17.1 Standalone with network isolation
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-backend-services-deployment" class="md-nav__link">
-    Procedure - backend services deployment
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
+  <a href="#cleanup-of-the-environment" class="md-nav__link">
+    Cleanup of the environment
   </a>
   
 </li>
@@ -700,164 +686,211 @@
   
 
 
-<h1 id="backend-services-deployment">Backend services deployment<a class="headerlink" href="#backend-services-deployment" title="Permanent link">#</a></h1>
-<p>The following instructions create OpenStackControlPlane CR with
-MariaDB and RabbitMQ deployed, and all the other services disabled. This will
-be the foundation of the podified control plane.</p>
-<p>In subsequent steps, we'll import the original databases and then add
-podified OpenStack control plane services.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
-<ul>
-<li>
-<p>The cloud which we want to adopt is up and running. It's on
-  OpenStack Wallaby release.</p>
-</li>
-<li>
-<p>The <code>openstack-operator</code> is deployed, but <code>OpenStackControlPlane</code> is
-  <strong>not</strong> deployed.</p>
-</li>
-</ul>
-<p>For developer/CI environments, the openstack operator can be deployed
-  by running <code>make openstack</code> inside
-  <a href="https://github.com/openstack-k8s-operators/install_yamls">install_yamls</a>
-  repo.</p>
-<p>For production environments, the deployment method will likely be
-  different.</p>
-<ul>
-<li>There are free PVs available to be claimed (for MariaDB and RabbitMQ).</li>
-</ul>
-<p>For developer/CI environments driven by install_yamls, make sure
-  you've run <code>make crc_storage</code>.</p>
-<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
-<ul>
-<li>Set the desired admin password for the podified deployment. This can
-  be the original deployment's admin password or something else.</li>
-</ul>
-<div class="highlight"><pre><span></span><code>ADMIN_PASSWORD=SomePassword
+<h1 id="development-environment">Development environment<a class="headerlink" href="#development-environment" title="Permanent link">#</a></h1>
+<hr />
+<p><em>This is a guide for install_yamls based Adoption environment. It is
+a work in progress. For now please use the previous
+<a href="https://gitlab.cee.redhat.com/rhos-upgrades/data-plane-adoption-dev/-/tree/main/crc-and-vagrant">CRC and Vagrant TripleO Standalone</a>
+development environment guide.</em></p>
+<hr />
+<p>The Adoption development environment utilizes
+<a href="https://github.com/openstack-k8s-operators/install_yamls">install_yamls</a>
+for CRC VM creation and for creation of the VM that hosts the original
+OpenStack (currently in Standalone configuration).</p>
+<h2 id="environment-prep">Environment prep<a class="headerlink" href="#environment-prep" title="Permanent link">#</a></h2>
+<p>Get install_yamls:</p>
+<div class="highlight"><pre><span></span><code>git clone https://github.com/openstack-k8s-operators/install_yamls.git
 </code></pre></div>
-<ul>
-<li>Set service password variables to match the original deployment.
-  Database passwords can differ in podified environment, but
-  synchronizing the service account passwords is a required step.</li>
-</ul>
-<p>E.g. in developer environments with TripleO Standalone, the
-  passwords can be extracted like this:</p>
-<div class="highlight"><pre><span></span><code>CINDER_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; CinderPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-GLANCE_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; GlancePassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-IRONIC_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; IronicPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-NEUTRON_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; NeutronPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-NOVA_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; NovaPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-OCTAVIA_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; OctaviaPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-PLACEMENT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; PlacementPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
+<p>Install tools for operator development:</p>
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+make download_tools
 </code></pre></div>
-<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
-<h2 id="procedure-backend-services-deployment">Procedure - backend services deployment<a class="headerlink" href="#procedure-backend-services-deployment" title="Permanent link">#</a></h2>
-<ul>
-<li>Create OSP secret.</li>
-</ul>
-<p>The procedure for this will vary, but in developer/CI environments
-  we use install_yamls:</p>
-<div class="highlight"><pre><span></span><code># in install_yamls
+<p>If you want a less intrusive alternative (Go from RPM rather than
+upstream etc.) that allows for basic testing, make sure to at least do
+the following:</p>
+<div class="highlight"><pre><span></span><code>sudo dnf -y install \
+    git \
+    golang \
+    guestfs-tools \
+    dbus-x11 \
+    libvirt \
+    make
+
+go env -w GOPROXY=&quot;https://proxy.golang.org,direct&quot;
+GO111MODULE=on go install sigs.k8s.io/kustomize/kustomize/v5@latest
+</code></pre></div>
+<h2 id="deployment-of-crc-with-network-isolation">Deployment of CRC with network isolation<a class="headerlink" href="#deployment-of-crc-with-network-isolation" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+PULL_SECRET=$HOME/pull-secret.txt CPUS=12 MEMORY=40000 DISK=100 make crc
+
+eval $(crc oc-env)
+oc login -u kubeadmin -p 12345678 https://api.crc.testing:6443
+
+make crc_attach_default_interface
+
+cd ..  # back to install_yamls
+make crc_storage
 make input
+make openstack
 </code></pre></div>
-<ul>
-<li>If the <code>$ADMIN_PASSWORD</code> is different than the already set password
-  in <code>osp-secret</code>, amend the <code>AdminPassword</code> key in the <code>osp-secret</code>
-  correspondingly:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc set data secret/osp-secret &quot;AdminPassword=$ADMIN_PASSWORD&quot;
+<h2 id="deployment-of-171-standalone-with-network-isolation">Deployment of 17.1 Standalone with network isolation<a class="headerlink" href="#deployment-of-171-standalone-with-network-isolation" title="Permanent link">#</a></h2>
+<p>Instructions for OSP 17.1 Standalone deployment with network isolation
+are TBD, for now you can use the TripleO Wallaby Standalone without
+network isolation as documented in the <a href="https://gitlab.cee.redhat.com/rhos-upgrades/data-plane-adoption-dev/-/tree/main/crc-and-vagrant">original dev setup
+repo</a>.</p>
+<p>That will mean you can only adopt the OpenStack without utilizing the
+isolated networks.</p>
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+EDPM_COMPUTE_VCPUS=8 EDPM_COMPUTE_RAM=20 EDPM_COMPUTE_DISK_SIZE=70 make edpm_compute
+
+ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100
 </code></pre></div>
-<ul>
-<li>Set service account passwords in <code>osp-secret</code> to match the service
-  account passwords from the original deployment:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc set data secret/osp-secret &quot;CinderPassword=$CINDER_PASSWORD&quot;
-oc set data secret/osp-secret &quot;GlancePassword=$GLANCE_PASSWORD&quot;
-oc set data secret/osp-secret &quot;IronicPassword=$IRONIC_PASSWORD&quot;
-oc set data secret/osp-secret &quot;NeutronPassword=$NEUTRON_PASSWORD&quot;
-oc set data secret/osp-secret &quot;NovaPassword=$NOVA_PASSWORD&quot;
-oc set data secret/osp-secret &quot;OctaviaPassword=$OCTAVIA_PASSWORD&quot;
-oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
+<p>In the compute node:</p>
+<div class="highlight"><pre><span></span><code>export GATEWAY=192.168.122.1
+export CTLPLANE_IP=192.168.122.100
+export CTLPLANE_VIP=192.168.122.99
+export INTERNAL_IP=$(sed -e &#39;s/192.168.122/172.17.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
+export STORAGE_IP=$(sed -e &#39;s/192.168.122/172.18.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
+export TENANT_IP=$(sed -e &#39;s/192.168.122/172.10.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
+export EXTERNAL_IP=$(sed -e &#39;s/192.168.122/172.19.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
+export NEUTRON_INTERFACE=vlan44
+export NTP_SERVER=clock.corp.redhat.com
+
+sudo hostnamectl set-hostname standalone.localdomain
+sudo hostnamectl set-hostname standalone.localdomain --transient
+
+sudo dnf remove -y epel-release
+sudo dnf update -y
+sudo dnf install -y vim git curl util-linux lvm2 tmux wget
+url=https://trunk.rdoproject.org/centos9/component/tripleo/current/
+rpm_name=$(curl $url | grep python3-tripleo-repos | sed -e &#39;s/&lt;[^&gt;]*&gt;//g&#39; | awk &#39;BEGIN { FS = &quot;.rpm&quot; } ; { print $1 }&#39;)
+rpm=$rpm_name.rpm
+sudo dnf install -y $url$rpm
+sudo -E tripleo-repos -b wallaby current-tripleo-dev ceph --stream
+sudo dnf repolist
+sudo dnf update -y
+sudo dnf install -y podman python3-tripleoclient
+
+sudo mkdir -p /etc/os-net-config
+cat &lt;&lt; EOF | sudo tee /etc/os-net-config/config.yaml
+network_config:
+- type: ovs_bridge
+  name: br-ctlplane
+  mtu: 1500
+  use_dhcp: false
+  dns_servers:
+  - $GATEWAY
+  domain: []
+  addresses:
+  - ip_netmask: $CTLPLANE_IP/24
+  routes:
+  - ip_netmask: 0.0.0.0/0
+    next_hop: $GATEWAY
+  members:
+  - type: interface
+    name: nic1
+    mtu: 1500
+    # force the MAC address of the bridge to this interface
+    primary: true
+
+  # external
+  - type: vlan
+    mtu: 1500
+    vlan_id: 44
+    addresses:
+    - ip_netmask: $EXTERNAL_IP/24
+    routes: []
+
+  # internal
+  - type: vlan
+    mtu: 1500
+    vlan_id: 20
+    addresses:
+    - ip_netmask: $INTERNAL_IP/24
+    routes: []
+
+  # storage
+  - type: vlan
+    mtu: 1500
+    vlan_id: 21
+    addresses:
+    - ip_netmask: $STORAGE_IP/24
+    routes: []
+
+  # tenant
+  - type: vlan
+    mtu: 1500
+    vlan_id: 22
+    addresses:
+    - ip_netmask: $TENANT_IP/24
+    routes: []
+EOF
+
+cat &lt;&lt; EOF | sudo tee /etc/cloud/cloud.cfg.d/99-edpm-disable-network-config.cfg
+network:
+  config: disabled
+EOF
+
+sudo systemctl enable network
+
+sudo os-net-config -c /etc/os-net-config/config.yaml
+
+cat &lt;&lt; EOF &gt; $HOME/standalone_parameters.yaml
+parameter_defaults:
+  CloudName: $CTLPLANE_IP
+  # ControlPlaneStaticRoutes: []
+  ControlPlaneStaticRoutes:
+    - ip_netmask: 0.0.0.0/0
+      next_hop: $GATEWAY
+      default: true
+  DeploymentUser: $USER
+  DnsServers:
+    - $GATEWAY
+  DockerInsecureRegistryAddress:
+    - $CTLPLANE_IP:8787
+  NeutronPublicInterface: $NEUTRON_INTERFACE
+  NtpServer: $NTP_SERVER
+  CloudDomain: localdomain
+  NeutronDnsDomain: localdomain
+  NeutronBridgeMappings: datacentre:br-ctlplane
+  NeutronPhysicalBridge: br-ctlplane
+  StandaloneEnableRoutedNetworks: false
+  StandaloneHomeDir: $HOME
+  InterfaceLocalMtu: 1500
+  NovaComputeLibvirtType: qemu
+EOF
+
+openstack tripleo container image prepare default \
+  --output-env-file $HOME/containers-prepare-parameters.yaml
+
+cat &lt;&lt; EOF &gt; $HOME/standalone.sh
+set -euxo pipefail
+
+if podman ps | grep keystone; then
+    echo &quot;Looks like OpenStack is already deployed, not re-deploying.&quot;
+    exit 0
+fi
+
+sudo openstack tripleo deploy \
+  --templates \
+  --local-ip=$CTLPLANE_IP/24 \
+  --control-virtual-ip=$CTLPLANE_VIP \
+  -e /usr/share/openstack-tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
+  -r /usr/share/openstack-tripleo-heat-templates/roles/Standalone.yaml \
+  -e &quot;$HOME/containers-prepare-parameters.yaml&quot; \
+  -e &quot;$HOME/standalone_parameters.yaml&quot; \
+  -e /usr/share/openstack-tripleo-heat-templates/environments/low-memory-usage.yaml \
+  --output-dir $HOME
+
+export OS_CLOUD=standalone
+openstack endpoint list
+EOF
+
+bash standalone.sh | tee standalone.log
 </code></pre></div>
-<ul>
-<li>Deploy OpenStackControlPlane. <strong>Make sure to only enable MariaDB and
-  RabbitMQ services. All other services must be disabled.</strong></li>
-</ul>
-<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc apply -f - &lt;&lt;EOF</span>
-<span class="l l-Scalar l-Scalar-Plain">apiVersion</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.openstack.org/v1beta1</span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenStackControlPlane</span>
-<span class="nt">metadata</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
-<span class="nt">spec</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">secret</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">osp-secret</span>
-<span class="w">  </span><span class="nt">storageClass</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-storage</span>
-
-<span class="w">  </span><span class="nt">keystone</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">mariadb</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">openstack</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo</span>
-<span class="w">        </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">500M</span>
-
-<span class="w">  </span><span class="nt">rabbitmq</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">templates</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">rabbitmq</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-<span class="w">      </span><span class="nt">rabbitmq-cell1</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
-
-<span class="w">  </span><span class="nt">placement</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">glance</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">glanceAPIInternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">      </span><span class="nt">glanceAPIExternal</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">ovs</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">external-ids</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">neutron</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">nova</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-
-<span class="w">  </span><span class="nt">ironic</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">ironicConductors</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
-
-<span class="w">  </span><span class="nt">manila</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
-<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">manilaAPI</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">      </span><span class="nt">manilaScheduler</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="w">      </span><span class="nt">manilaShares</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
-<span class="l l-Scalar l-Scalar-Plain">EOF</span>
-</code></pre></div>
-<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>Check that MariaDB is running.</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc get pod mariadb-openstack -o jsonpath=&#39;{.status.phase}{&quot;\n&quot;}&#39;
+<h2 id="cleanup-of-the-environment">Cleanup of the environment<a class="headerlink" href="#cleanup-of-the-environment" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+make crc_cleanup
 </code></pre></div>
 
   <hr>
@@ -865,7 +898,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
   <small>
     
       Last update:
-      2023-04-19
+      2023-04-17
     
   </small>
 </div>
