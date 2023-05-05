@@ -15,9 +15,13 @@
         <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/edpm_adoption/">
       
       
+        <link rel="prev" href="../other_services_adoption/">
+      
+      
+        <link rel="next" href="../troubleshooting/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.1.8">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
     
     
       
@@ -25,10 +29,10 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.ded33207.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.85bb2934.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.a0c5b2b5.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.a6bdf11c.min.css">
       
       
 
@@ -265,14 +269,16 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
       
       
       
@@ -281,7 +287,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -381,6 +387,89 @@
       <a href="../other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          EDPM adoption
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        EDPM adoption
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-checks" class="md-nav__link">
+    Pre-checks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-edpm-adoption" class="md-nav__link">
+    Procedure - EDPM adoption
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-checks" class="md-nav__link">
+    Post-checks
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -649,6 +738,36 @@
   EOF
 </code></pre></div>
 <ul>
+<li>Stop the nova services.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update the services list to be stopped</span>
+
+<span class="nv">ServicesToStop</span><span class="o">=(</span><span class="s2">&quot;tripleo_nova_api_cron.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_api.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_compute.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_conductor.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_libvirt.target&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_metadata.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_migration_target.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_scheduler.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtlogd_wrapper.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtnodedevd.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtproxyd.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtqemud.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtsecretd.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_virtstoraged.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_vnc_proxy.service&quot;</span><span class="o">)</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping nova services&quot;</span>
+
+<span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the </span><span class="nv">$service</span><span class="s2"> in each controller node&quot;</span>
+<span class="w">    </span><span class="nv">$CONTROLLER1_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
+<span class="w">    </span><span class="nv">$CONTROLLER2_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
+<span class="w">    </span><span class="nv">$CONTROLLER3_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
+<span class="k">done</span>
+</code></pre></div>
+<ul>
 <li>Deploy OpenStackDataPlane:</li>
 </ul>
 <p><div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
@@ -800,7 +919,7 @@ Note: Role vars will be inherited by nodes, more details <a href="https://openst
   <small>
     
       Last update:
-      2023-04-05
+      2023-05-05
     
   </small>
 </div>
@@ -844,7 +963,7 @@ Note: Role vars will be inherited by nodes, more details <a href="https://openst
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.51198bba.min.js"></script>
+      <script src="../../assets/javascripts/bundle.fac441b0.min.js"></script>
       
     
   </body>
