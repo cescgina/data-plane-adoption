@@ -21,7 +21,7 @@
         <link rel="next" href="../troubleshooting/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.9">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.11">
     
     
       
@@ -768,6 +768,72 @@
 <span class="k">done</span>
 </code></pre></div>
 <ul>
+<li>Deploy OpenStackDataPlaneService(s):</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
+  apiVersion: dataplane.openstack.org/v1beta1
+  kind: OpenStackDataPlaneService
+  metadata:
+    labels:
+      app.kubernetes.io/name: openstackdataplaneservice
+      app.kubernetes.io/instance: openstackdataplaneservice-sample
+      app.kubernetes.io/part-of: dataplane-operator
+      app.kubernetes.io/managed-by: kustomize
+      app.kubernetes.io/created-by: dataplane-operator
+    name: configure-network
+  spec:
+    label: dataplane-deployment-configure-network
+    role:
+
+      name: &quot;Deploy EDPM Network&quot;
+      hosts: &quot;all&quot;
+      strategy: &quot;linear&quot;
+      tasks:
+        - name: &quot;Install edpm_bootstrap&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_bootstrap&quot;
+            tasks_from: &quot;bootstrap.yml&quot;
+          tags:
+            - &quot;edpm_bootstrap&quot;
+        - name: &quot;Grow volumes&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_growvols&quot;
+            tasks_from: &quot;main.yml&quot;
+          tags:
+            - &quot;edpm_growvols&quot;
+        - name: &quot;Install edpm_kernel&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_kernel&quot;
+            tasks_from: &quot;main.yml&quot;
+          tags:
+            - &quot;edpm_kernel&quot;
+        - name: &quot;Import edpm_tuned&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_tuned&quot;
+            tasks_from: &quot;main.yml&quot;
+          tags:
+            - &quot;edpm_tuned&quot;
+        - name: &quot;Configure Kernel Args&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_kernel&quot;
+            tasks_from: &quot;kernelargs.yml&quot;
+          tags:
+            - &quot;edpm_kernel&quot;
+        - name: &quot;Configure Hosts Entries&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_hosts_entries&quot;
+            tasks_from: &quot;main.yml&quot;
+          tags:
+            - &quot;edpm_hosts_entries&quot;
+        - name: &quot;import edpm_network_config&quot;
+          import_role:
+            name: &quot;osp.edpm.edpm_network_config&quot;
+            tasks_from: &quot;main.yml&quot;
+          tags:
+            - &quot;edpm_network_config&quot;
+  EOF
+</code></pre></div>
+<ul>
 <li>Deploy OpenStackDataPlane:</li>
 </ul>
 <p><div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
@@ -804,6 +870,8 @@
           - internalapi
           - storage
           - tenant
+        services:
+          - configure-network
         env:
           - name: ANSIBLE_FORCE_COLOR
             value: &quot;True&quot;
@@ -919,7 +987,7 @@ Note: Role vars will be inherited by nodes, more details <a href="https://openst
   <small>
     
       Last update:
-      2023-05-05
+      2023-05-09
     
   </small>
 </div>
