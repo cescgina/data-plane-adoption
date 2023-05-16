@@ -779,13 +779,13 @@ spec:
     enabled: true
     template:
       databaseInstance: openstack
-      containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+      containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
       storageClass: &quot;local-storage&quot;
       storageRequest: 10G
       glanceAPIInternal:
-        containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
       glanceAPIExternal:
-        containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
 &#39;
 </code></pre></div>
 <p>However, if a Ceph backend is used, the <code>customServiceConfig</code> parameter should
@@ -824,7 +824,7 @@ spec:
     enabled: true
     template:
       databaseInstance: openstack
-      containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+      containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
       customServiceConfig: |
         [DEFAULT]
         enabled_backends=default_backend:rbd
@@ -838,9 +838,9 @@ spec:
       storageClass: &quot;local-storage&quot;
       storageRequest: 10G
       glanceAPIInternal:
-        containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
       glanceAPIExternal:
-        containerImage: quay.io/tripleozedcentos9/openstack-glance-api:current-tripleo
+        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
   extraMounts:
     - extraVol:
       - propagation:
@@ -967,7 +967,7 @@ c3158cad-d50b-452f-bec1-f250562f5c1f
   <small>
     
       Last update:
-      2023-02-23
+      2023-05-09
     
   </small>
 </div>

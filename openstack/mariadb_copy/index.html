@@ -765,7 +765,7 @@ cluster.</p>
 <p>Define the shell variables used in the steps below. The values are
 just illustrative, use values that are correct for your environment:</p>
 <div class="highlight"><pre><span></span><code>PODIFIED_MARIADB_IP=$(oc get -o yaml pod mariadb-openstack | grep podIP: | awk &#39;{ print $2; }&#39;)
-MARIADB_IMAGE=quay.io/tripleozedcentos9/openstack-mariadb:current-tripleo
+MARIADB_IMAGE=quay.io/podified-antelope-centos9/openstack-mariadb:current-podified
 
 # Use your environment&#39;s values for these:
 EXTERNAL_MARIADB_IP=192.168.24.3
@@ -868,7 +868,7 @@ done
   <small>
     
       Last update:
-      2023-03-20
+      2023-05-09
     
   </small>
 </div>

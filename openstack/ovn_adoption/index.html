@@ -728,7 +728,7 @@ incomplete OpenFlow table contents.</p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
 <p>Define the shell variables used in the steps below. The values are
 just illustrative, use values that are correct for your environment:</p>
-<div class="highlight"><pre><span></span><code><span class="nv">OVSDB_IMAGE</span><span class="o">=</span>quay.io/tripleozedcentos9/openstack-ovn-base:current-tripleo
+<div class="highlight"><pre><span></span><code><span class="nv">OVSDB_IMAGE</span><span class="o">=</span>quay.io/podified-antelope-centos9/openstack-ovn-base:current-podified
 <span class="nv">EXTERNAL_OVSDB_IP</span><span class="o">=</span><span class="m">172</span>.17.1.49
 
 <span class="c1"># ssh commands to reach the original controller machines</span>
@@ -760,17 +760,17 @@ just illustrative, use values that are correct for your environment:</p>
 <span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
 <span class="w">      </span><span class="nt">ovnDBCluster</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">ovndbcluster-nb</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-nb-db-server:current-tripleo</span>
+<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/podified-antelope-centos9/openstack-ovn-nb-db-server:current-podified</span>
 <span class="w">          </span><span class="nt">dbType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NB</span>
 <span class="w">          </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
 <span class="w">          </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
 <span class="w">        </span><span class="nt">ovndbcluster-sb</span><span class="p">:</span>
-<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-sb-db-server:current-tripleo</span>
+<span class="w">          </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/podified-antelope-centos9/openstack-ovn-sb-db-server:current-podified</span>
 <span class="w">          </span><span class="nt">dbType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SB</span>
 <span class="w">          </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
 <span class="w">          </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
 <span class="w">      </span><span class="nt">ovnNorthd</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/tripleozedcentos9/openstack-ovn-northd:current-tripleo</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/podified-antelope-centos9/openstack-ovn-northd:current-podified</span>
 <span class="w">        </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
 <span class="s">&#39;</span>
 </code></pre></div>
@@ -820,7 +820,7 @@ oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-i
   <small>
     
       Last update:
-      2023-03-22
+      2023-05-09
     
   </small>
 </div>
