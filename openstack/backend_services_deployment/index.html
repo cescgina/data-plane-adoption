@@ -453,6 +453,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../cinder_adoption/" class="md-nav__link">
+        Cinder adoption
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../other_services_adoption/" class="md-nav__link">
         Adoption of other services
       </a>
@@ -836,7 +850,11 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
 <span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cinderAPI</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">      </span><span class="nt">cinderScheduler</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+<span class="w">      </span><span class="nt">cinderBackup</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
 <span class="w">      </span><span class="nt">cinderVolumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+
 <span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
@@ -879,7 +897,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
   <small>
     
       Last update:
-      2023-05-09
+      2023-05-03
     
   </small>
 </div>

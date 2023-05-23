@@ -12,20 +12,20 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/troubleshooting/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/cinder_adoption/">
       
       
-        <link rel="prev" href="../edpm_adoption/">
+        <link rel="prev" href="../placement_adoption/">
       
       
-        <link rel="next" href="../../ceph/ceph_rbd/">
+        <link rel="next" href="../other_services_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.14">
     
     
       
-        <title>Troubleshooting - OpenStack Data Plane Adoption</title>
+        <title>Cinder adoption - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#troubleshooting" class="md-skip">
+        <a href="#cinder-adoption" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshooting
+              Cinder adoption
             
           </span>
         </div>
@@ -382,11 +382,80 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../cinder_adoption/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Cinder adoption
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Cinder adoption
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-checks" class="md-nav__link">
+    Pre-checks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-cinder-adoption" class="md-nav__link">
+    Procedure - Cinder adoption
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-checks" class="md-nav__link">
+    Post-checks
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -424,59 +493,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Troubleshooting
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../troubleshooting/" class="md-nav__link">
         Troubleshooting
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#errimagepull-due-to-missing-authentication" class="md-nav__link">
-    ErrImagePull due to missing authentication
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
-    Database schema version mismatch when restoring OVN databases
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -655,15 +676,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#errimagepull-due-to-missing-authentication" class="md-nav__link">
-    ErrImagePull due to missing authentication
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
-    Database schema version mismatch when restoring OVN databases
+  <a href="#variables" class="md-nav__link">
+    Variables
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-checks" class="md-nav__link">
+    Pre-checks
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#procedure-cinder-adoption" class="md-nav__link">
+    Procedure - Cinder adoption
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#post-checks" class="md-nav__link">
+    Post-checks
   </a>
   
 </li>
@@ -686,80 +728,59 @@
   
 
 
-<h1 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">#</a></h1>
-<p>This document contains information about various issues you might face
-and how to solve them.</p>
-<h2 id="errimagepull-due-to-missing-authentication">ErrImagePull due to missing authentication<a class="headerlink" href="#errimagepull-due-to-missing-authentication" title="Permanent link">#</a></h2>
-<p>The deployed containers pull the images from private containers registries that
-can potentially return authentication errors like:</p>
-<div class="highlight"><pre><span></span><code>Failed to pull image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;:
-rpc error: code = Unknown desc = unable to retrieve auth token: invalid
-username/password: unauthorized: Please login to the Red Hat Registry using
-your Customer Portal credentials.
+<h1 id="cinder-adoption">Cinder adoption<a class="headerlink" href="#cinder-adoption" title="Permanent link">#</a></h1>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<ul>
+<li>Previous Adoption steps completed. Notably, the service databases
+  must already be imported into the podified MariaDB.</li>
+</ul>
+<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
+<p>(There are no shell variables necessary currently.)</p>
+<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
+<h2 id="procedure-cinder-adoption">Procedure - Cinder adoption<a class="headerlink" href="#procedure-cinder-adoption" title="Permanent link">#</a></h2>
+<ul>
+<li>Patch OpenStackControlPlane to deploy Cinder:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>oc patch openstackcontrolplane openstack --type=merge --patch &#39;
+spec:
+  cinder:
+    enabled: true
+    template:
+      databaseInstance: openstack
+      secret: osp-secret
+      cinderAPI:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-api:current-tripleo
+      cinderScheduler:
+        replicas: 1
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-scheduler:current-tripleo
+      cinderBackup:
+        replicas: 0 # backend needs to be configured
+        containerImage: quay.io/tripleozedcentos9/openstack-cinder-backup:current-tripleo
+      cinderVolumes:
+        volume1:
+          containerImage: quay.io/tripleozedcentos9/openstack-cinder-volume:current-tripleo
+          replicas: 0 # backend needs to be configured
+&#39;
 </code></pre></div>
-<p>An example of a failed pod:</p>
-<div class="highlight"><pre><span></span><code>  Normal   Scheduled       3m40s                  default-scheduler  Successfully assigned openstack/rabbitmq-server-0 to worker0
-  Normal   AddedInterface  3m38s                  multus             Add eth0 [10.101.0.41/23] from ovn-kubernetes
-  Warning  Failed          2m16s (x6 over 3m38s)  kubelet            Error: ImagePullBackOff
-  Normal   Pulling         2m5s (x4 over 3m38s)   kubelet            Pulling image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;
-  Warning  Failed          2m5s (x4 over 3m38s)   kubelet            Failed to pull image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;: rpc error: code  ... can be found here: https://access.redhat.com/RegistryAuthentication
-  Warning  Failed          2m5s (x4 over 3m38s)   kubelet            Error: ErrImagePull
-  Normal   BackOff         110s (x7 over 3m38s)   kubelet            Back-off pulling image &quot;registry.redhat.io/rhosp-rhel9/openstack-rabbitmq:17.0&quot;
+<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
+<ul>
+<li>See that Cinder endpoints are defined and pointing to the podified
+  FQDNs:</li>
+</ul>
+<div class="highlight"><pre><span></span><code>export OS_CLIENT_CONFIG_FILE=clouds-adopted.yaml
+export OS_CLOUD=adopted
+
+openstack endpoint list | grep cinder
+openstack volume type list
 </code></pre></div>
-<p>To solve this issue we need to get a valid pull-secret from the official <a href="https://console.redhat.com/openshift/install/pull-secret">Red
-Hat console site</a>,
-store this pull secret locally in a machine with access to the Kubernetes API
-(service node), and then run:</p>
-<div class="highlight"><pre><span></span><code>oc set data secret/pull-secret -n openshift-config --from-file=.dockerconfigjson=&lt;pull_secret_location.json&gt;
-</code></pre></div>
-<p>The previous command will make available the authentication information in all
-the cluster's compute nodes, then trigger a new pod deployment to pull the
-container image with:</p>
-<div class="highlight"><pre><span></span><code>kubectl delete pod rabbitmq-server-0 -n openstack
-</code></pre></div>
-<p>And the pod should be able to pull the image successfully.  For more
-information about what container registries requires what type of
-authentication, check the <a href="https://access.redhat.com/RegistryAuthentication">official
-docs</a>.</p>
-<h2 id="database-schema-version-mismatch-when-restoring-ovn-databases">Database schema version mismatch when restoring OVN databases<a class="headerlink" href="#database-schema-version-mismatch-when-restoring-ovn-databases" title="Permanent link">#</a></h2>
-<p>You may see the following errors when trying to restore OVN databases:</p>
-<div class="highlight"><pre><span></span><code>ovsdb-client: backup schema has version &quot;7.0.0&quot; but database schema has version &quot;6.3.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
-ovsdb-client: backup schema has version &quot;20.27.0&quot; but database schema has version &quot;20.23.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
-</code></pre></div>
-<p>This happens because your podified cluster is running OVN version that is older
-than the version running in the original cluster. You may work this issue
-around by pulling OVN images from the original cluster registry into podified
-cluster.</p>
-<p>You may have to first enable insecure registries in your podified cluster:</p>
-<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>image.config.openshift.io/cluster<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">spec:</span>
-<span class="s1">  registrySources:</span>
-<span class="s1">    insecureRegistries:</span>
-<span class="s1">    - 192.168.130.1</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-<p>Then update OVN services to pull images from the original registry:</p>
-<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>openstackcontrolplane<span class="w"> </span>openstack<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">spec:</span>
-<span class="s1">  ovn:</span>
-<span class="s1">    template:</span>
-<span class="s1">      ovnDBCluster:</span>
-<span class="s1">        ovndbcluster-nb:</span>
-<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
-<span class="s1">        ovndbcluster-sb:</span>
-<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-sb-db-server:17.1_20230130.1</span>
-<span class="s1">      ovnNorthd:</span>
-<span class="s1">        containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-<p>Now repeat database <code>ovsdb-client restore</code> commands. They should succeed.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-03-22
+      2023-05-09
     
   </small>
 </div>
