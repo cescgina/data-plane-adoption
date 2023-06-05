@@ -648,11 +648,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-the-ng-deployment" class="md-nav__link">
-    Complete the NG Deployment
+  <a href="#performing-the-data-plane-adoption" class="md-nav__link">
+    Performing the Data Plane Adoption
   </a>
   
-    <nav class="md-nav" aria-label="Complete the NG Deployment">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimenting-with-an-additional-compute-node" class="md-nav__link">
+    Experimenting with an additional compute node
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimenting with an additional compute node">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -806,11 +813,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#complete-the-ng-deployment" class="md-nav__link">
-    Complete the NG Deployment
+  <a href="#performing-the-data-plane-adoption" class="md-nav__link">
+    Performing the Data Plane Adoption
   </a>
   
-    <nav class="md-nav" aria-label="Complete the NG Deployment">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#experimenting-with-an-additional-compute-node" class="md-nav__link">
+    Experimenting with an additional compute node
+  </a>
+  
+    <nav class="md-nav" aria-label="Experimenting with an additional compute node">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1209,7 +1223,18 @@ openstack image create cirros --disk-format=raw --container-format=bare &lt; $RA
 Confirm the image UUID can be seen in Ceph's images pool.
 <div class="highlight"><pre><span></span><code>sudo cephadm shell -- rbd -p images ls -l
 </code></pre></div></p>
-<h2 id="complete-the-ng-deployment">Complete the NG Deployment<a class="headerlink" href="#complete-the-ng-deployment" title="Permanent link">#</a></h2>
+<h2 id="performing-the-data-plane-adoption">Performing the Data Plane Adoption<a class="headerlink" href="#performing-the-data-plane-adoption" title="Permanent link">#</a></h2>
+<p>The development environment is now set up, you can go to the <a href="https://openstack-k8s-operators.github.io/data-plane-adoption/">Adoption
+documentation</a>
+and perform adoption manually, or run the <a href="https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/tests/">test
+suite</a>
+against your environment.</p>
+<hr />
+<hr />
+<h2 id="experimenting-with-an-additional-compute-node">Experimenting with an additional compute node<a class="headerlink" href="#experimenting-with-an-additional-compute-node" title="Permanent link">#</a></h2>
+<p>The following is not on the critical path of preparing the development
+environment for Adoption, but it shows how to make the environment
+work with an additional compute node VM.</p>
 <p>The remaining steps should be completed on the hypervisor hosting crc
 and edpm-compute-0.</p>
 <h3 id="deploy-ng-control-plane-with-ceph">Deploy NG Control Plane with Ceph<a class="headerlink" href="#deploy-ng-control-plane-with-ceph" title="Permanent link">#</a></h3>
@@ -1347,7 +1372,7 @@ The same pattern can be applied to other services.</p>
   <small>
     
       Last update:
-      2023-05-31
+      2023-06-02
     
   </small>
 </div>
