@@ -765,7 +765,7 @@ just illustrative, use values that are correct for your environment:</p>
 <span class="si">${</span><span class="nv">client</span><span class="si">}</span><span class="w"> </span>backup<span class="w"> </span>tcp:<span class="nv">$EXTERNAL_OVSDB_IP</span>:6642<span class="w"> </span>&gt;<span class="w"> </span>ovs-sb.db
 </code></pre></div>
 <ul>
-<li>Start podified OVN services prior to database import.</li>
+<li>Start podified OVN database services prior to import.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc patch openstackcontrolplane openstack --type=merge --patch &#39;</span>
 <span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
@@ -783,9 +783,6 @@ just illustrative, use values that are correct for your environment:</p>
 <span class="w">          </span><span class="nt">dbType</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SB</span>
 <span class="w">          </span><span class="nt">storageRequest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10G</span>
 <span class="w">          </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
-<span class="w">      </span><span class="nt">ovnNorthd</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/podified-antelope-centos9/openstack-ovn-northd:current-podified</span>
-<span class="w">        </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
 <span class="s">&#39;</span>
 </code></pre></div>
 <ul>
@@ -793,6 +790,12 @@ just illustrative, use values that are correct for your environment:</p>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="nv">PODIFIED_OVSDB_NB_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>po<span class="w"> </span>ovsdbserver-nb-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/networks-status}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;map(. | select(.name==&quot;openstack/internalapi&quot;))[0].ips[0]&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="k">)</span>
 <span class="nv">PODIFIED_OVSDB_SB_IP</span><span class="o">=</span><span class="k">$(</span>kubectl<span class="w"> </span>get<span class="w"> </span>po<span class="w"> </span>ovsdbserver-sb-0<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.k8s\.v1\.cni\.cncf\.io/networks-status}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span><span class="s1">&#39;map(. | select(.name==&quot;openstack/internalapi&quot;))[0].ips[0]&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="k">)</span>
+</code></pre></div>
+<ul>
+<li>Upgrade database schema for the backup files.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>podman run -it --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $OVSDB_IMAGE bash -c &quot;ovsdb-client get-schema tcp:$PODIFIED_OVSDB_NB_IP:6641 &gt; ./ovs-nb.ovsschema &amp;&amp; ovsdb-tool convert ovs-nb.db ./ovs-nb.ovsschema&quot;
+podman run -it --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $OVSDB_IMAGE bash -c &quot;ovsdb-client get-schema tcp:$PODIFIED_OVSDB_SB_IP:6641 &gt; ./ovs-sb.ovsschema &amp;&amp; ovsdb-tool convert ovs-sb.db ./ovs-sb.ovsschema&quot;
 </code></pre></div>
 <ul>
 <li>Restore database backup to podified OVN database servers.</li>
@@ -828,13 +831,26 @@ oc<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-i
 </ul>
 <div class="highlight"><pre><span></span><code>$<span class="w"> </span><span class="si">${</span><span class="nv">COMPUTE_SSH</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>tripleo_ovn_controller.service
 </code></pre></div>
+<ul>
+<li>Finally, you can start <code>ovn-northd</code> service that will keep OVN northbound and southbound databases in sync.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="l l-Scalar l-Scalar-Plain">oc patch openstackcontrolplane openstack --type=merge --patch &#39;</span>
+<span class="l l-Scalar l-Scalar-Plain">spec</span><span class="p p-Indicator">:</span>
+<span class="w">  </span><span class="nt">ovn</span><span class="p">:</span>
+<span class="err">   </span><span class="w w-Error"> </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">template</span><span class="p p-Indicator">:</span>
+<span class="w">      </span><span class="nt">ovnNorthd</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">containerImage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/podified-antelope-centos9/openstack-ovn-northd:current-podified</span>
+<span class="w">        </span><span class="nt">networkAttachment</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">internalapi</span>
+<span class="s">&#39;</span>
+</code></pre></div>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-05-09
+      2023-06-05
     
   </small>
 </div>

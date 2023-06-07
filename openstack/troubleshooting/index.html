@@ -466,13 +466,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
-    Database schema version mismatch when restoring OVN databases
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -661,13 +654,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#database-schema-version-mismatch-when-restoring-ovn-databases" class="md-nav__link">
-    Database schema version mismatch when restoring OVN databases
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -721,45 +707,13 @@ container image with:</p>
 information about what container registries requires what type of
 authentication, check the <a href="https://access.redhat.com/RegistryAuthentication">official
 docs</a>.</p>
-<h2 id="database-schema-version-mismatch-when-restoring-ovn-databases">Database schema version mismatch when restoring OVN databases<a class="headerlink" href="#database-schema-version-mismatch-when-restoring-ovn-databases" title="Permanent link">#</a></h2>
-<p>You may see the following errors when trying to restore OVN databases:</p>
-<div class="highlight"><pre><span></span><code>ovsdb-client: backup schema has version &quot;7.0.0&quot; but database schema has version &quot;6.3.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
-ovsdb-client: backup schema has version &quot;20.27.0&quot; but database schema has version &quot;20.23.0&quot; (use --force to override differences, or &quot;ovsdb-client convert&quot; to change the schema)
-</code></pre></div>
-<p>This happens because your podified cluster is running OVN version that is older
-than the version running in the original cluster. You may work this issue
-around by pulling OVN images from the original cluster registry into podified
-cluster.</p>
-<p>You may have to first enable insecure registries in your podified cluster:</p>
-<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>image.config.openshift.io/cluster<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">spec:</span>
-<span class="s1">  registrySources:</span>
-<span class="s1">    insecureRegistries:</span>
-<span class="s1">    - 192.168.130.1</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-<p>Then update OVN services to pull images from the original registry:</p>
-<div class="highlight"><pre><span></span><code>oc<span class="w"> </span>patch<span class="w"> </span>openstackcontrolplane<span class="w"> </span>openstack<span class="w"> </span>--type<span class="o">=</span>merge<span class="w"> </span>--patch<span class="w"> </span><span class="s1">&#39;</span>
-<span class="s1">spec:</span>
-<span class="s1">  ovn:</span>
-<span class="s1">    template:</span>
-<span class="s1">      ovnDBCluster:</span>
-<span class="s1">        ovndbcluster-nb:</span>
-<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
-<span class="s1">        ovndbcluster-sb:</span>
-<span class="s1">          containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-sb-db-server:17.1_20230130.1</span>
-<span class="s1">      ovnNorthd:</span>
-<span class="s1">        containerImage: 192.168.130.1:8787/rh-osbs/rhosp17-openstack-ovn-nb-db-server:17.1_20230130.1</span>
-<span class="s1">&#39;</span>
-</code></pre></div>
-<p>Now repeat database <code>ovsdb-client restore</code> commands. They should succeed.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-03-22
+      2023-06-05
     
   </small>
 </div>
