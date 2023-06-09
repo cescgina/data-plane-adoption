@@ -782,12 +782,12 @@ just illustrative, use values that are correct for your environment:</p>
 MARIADB_IMAGE=quay.io/podified-antelope-centos9/openstack-mariadb:current-podified
 
 # Use your environment&#39;s values for these:
-EXTERNAL_MARIADB_IP=192.168.24.3
+EXTERNAL_MARIADB_IP=192.168.122.100
 EXTERNAL_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
 PODIFIED_DB_ROOT_PASSWORD=12345678
 
 # ssh commands to reach controller machines
-CONTROLLER1_SSH=&quot;ssh -F ~/director_standalone/vagrant_ssh_config vagrant@standalone&quot;
+CONTROLLER1_SSH=&quot;ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100&quot;
 CONTROLLER2_SSH=&quot;:&quot;
 CONTROLLER3_SSH=&quot;:&quot;
 </code></pre></div>
@@ -882,7 +882,7 @@ done
   <small>
     
       Last update:
-      2023-05-09
+      2023-06-05
     
   </small>
 </div>
