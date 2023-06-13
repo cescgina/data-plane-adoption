@@ -793,13 +793,19 @@ spec:
     enabled: true
     template:
       databaseInstance: openstack
-      containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
       storageClass: &quot;local-storage&quot;
       storageRequest: 10G
       glanceAPIInternal:
-        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
+        externalEndpoints:
+        - endpoint: internal
+          ipAddressPool: internalapi
+          loadBalancerIPs:
+          - 172.17.0.80
+        networkAttachments:
+        - storage
       glanceAPIExternal:
-        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
+        networkAttachments:
+        - storage
 &#39;
 </code></pre></div>
 <p>However, if a Ceph backend is used, the <code>customServiceConfig</code> parameter should
@@ -852,9 +858,16 @@ spec:
       storageClass: &quot;local-storage&quot;
       storageRequest: 10G
       glanceAPIInternal:
-        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
+        externalEndpoints:
+        - endpoint: internal
+          ipAddressPool: internalapi
+          loadBalancerIPs:
+          - 172.17.0.80
+        networkAttachments:
+        - storage
       glanceAPIExternal:
-        containerImage: quay.io/podified-antelope-centos9/openstack-glance-api:current-podified
+        networkAttachments:
+        - storage
   extraMounts:
     - extraVol:
       - propagation:
@@ -981,7 +994,7 @@ c3158cad-d50b-452f-bec1-f250562f5c1f
   <small>
     
       Last update:
-      2023-05-09
+      2023-06-08
     
   </small>
 </div>

@@ -731,9 +731,13 @@ spec:
   placement:
     enabled: true
     template:
-      containerImage: quay.io/podified-antelope-centos9/openstack-placement-api:current-podified
       databaseInstance: openstack
       secret: osp-secret
+      externalEndpoints:
+      - endpoint: internal
+        ipAddressPool: internalapi
+        loadBalancerIPs:
+        - 172.17.0.80
 &#39;
 </code></pre></div>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
@@ -760,7 +764,7 @@ openstack resource class list
   <small>
     
       Last update:
-      2023-05-09
+      2023-06-08
     
   </small>
 </div>
