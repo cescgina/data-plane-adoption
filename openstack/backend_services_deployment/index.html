@@ -21,7 +21,7 @@
         <link rel="next" href="../mariadb_copy/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
@@ -763,6 +763,9 @@ podified OpenStack control plane services.</p>
 </ul>
 <div class="highlight"><pre><span></span><code>ADMIN_PASSWORD=SomePassword
 </code></pre></div>
+<p>To use the existing OpenStack deployment password:
+  <div class="highlight"><pre><span></span><code>ADMIN_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; AdminPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
+</code></pre></div></p>
 <ul>
 <li>Set service password variables to match the original deployment.
   Database passwords can differ in podified environment, but
@@ -936,7 +939,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
   <small>
     
       Last update:
-      2023-06-03
+      2023-06-14
     
   </small>
 </div>
@@ -980,7 +983,7 @@ oc set data secret/osp-secret &quot;PlacementPassword=$PLACEMENT_PASSWORD&quot;
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a51614de.min.js"></script>
       
     
   </body>

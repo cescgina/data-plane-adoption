@@ -21,7 +21,7 @@
         <link rel="next" href="../ovn_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
@@ -369,13 +369,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-stopping-control-plane-services" class="md-nav__link">
-    Procedure - stopping control plane services
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#procedure-data-copy" class="md-nav__link">
     Procedure - data copy
   </a>
@@ -704,13 +697,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-stopping-control-plane-services" class="md-nav__link">
-    Procedure - stopping control plane services
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#procedure-data-copy" class="md-nav__link">
     Procedure - data copy
   </a>
@@ -759,6 +745,9 @@ cluster.</p>
     control plane services are running.</p>
 </li>
 <li>
+<p>OpenStack services have been stopped</p>
+</li>
+<li>
 <p>There must be network routability between:</p>
 <ul>
 <li>
@@ -774,6 +763,12 @@ cluster.</p>
 </li>
 </ul>
 </li>
+<li>
+<p>Podman package is installed</p>
+</li>
+<li>
+<p><code>CONTROLLER1_SSH</code>, <code>CONTROLLER2_SSH</code>, and <code>CONTROLLER3_SSH</code> are configured.</p>
+</li>
 </ul>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
 <p>Define the shell variables used in the steps below. The values are
@@ -781,28 +776,24 @@ just illustrative, use values that are correct for your environment:</p>
 <div class="highlight"><pre><span></span><code>PODIFIED_MARIADB_IP=$(oc get -o yaml pod mariadb-openstack | grep podIP: | awk &#39;{ print $2; }&#39;)
 MARIADB_IMAGE=quay.io/podified-antelope-centos9/openstack-mariadb:current-podified
 
-# Use your environment&#39;s values for these:
-EXTERNAL_MARIADB_IP=192.168.122.100
-EXTERNAL_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-PODIFIED_DB_ROOT_PASSWORD=12345678
+SOURCE_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
+PODIFIED_DB_ROOT_PASSWORD=$(oc get -o json secret/osp-secret | jq -r .data.DbRootPassword | base64 -d)
 
-# ssh commands to reach controller machines
-CONTROLLER1_SSH=&quot;ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100&quot;
-CONTROLLER2_SSH=&quot;:&quot;
-CONTROLLER3_SSH=&quot;:&quot;
+# Replace with your environment&#39;s MariaDB IP:
+SOURCE_MARIADB_IP=192.168.122.100
 </code></pre></div>
 <h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
 <ul>
 <li>Test connection to the original DB (show databases):</li>
 </ul>
 <div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysql -h &quot;$EXTERNAL_MARIADB_IP&quot; -uroot &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
+    mysql -h &quot;$SOURCE_MARIADB_IP&quot; -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
 </code></pre></div>
 <ul>
-<li>Run mysqlcheck on the original DB:</li>
+<li>Run mysqlcheck on the original DB to look for things that are not OK:</li>
 </ul>
 <div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysqlcheck --all-databases -h $EXTERNAL_MARIADB_IP -u root &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot;
+    mysqlcheck --all-databases -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; | grep -v OK
 </code></pre></div>
 <ul>
 <li>Test connection to podified DB (show databases):</li>
@@ -810,33 +801,6 @@ CONTROLLER3_SSH=&quot;:&quot;
 <div class="highlight"><pre><span></span><code>oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
     mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
 </code></pre></div>
-<h2 id="procedure-stopping-control-plane-services">Procedure - stopping control plane services<a class="headerlink" href="#procedure-stopping-control-plane-services" title="Permanent link">#</a></h2>
-<p>From each controller node, it is necessary to stop the
-control-plane services to avoid inconsistencies in the
-data migrated for the data-plane adoption procedure.</p>
-<p>1- Connect to all the controller nodes and stop the control
-plane services.</p>
-<p>2- Stop the services.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># Update the services list to be stopped</span>
-
-<span class="nv">ServicesToStop</span><span class="o">=(</span><span class="s2">&quot;tripleo_horizon.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_keystone.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_cinder_api.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_glance_api.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_neutron_api.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_nova_api.service&quot;</span>
-<span class="w">                </span><span class="s2">&quot;tripleo_placement_api.service&quot;</span><span class="o">)</span>
-
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the OpenStack services&quot;</span>
-
-<span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the </span><span class="nv">$service</span><span class="s2"> in each controller node&quot;</span>
-<span class="w">    </span><span class="nv">$CONTROLLER1_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
-<span class="w">    </span><span class="nv">$CONTROLLER2_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
-<span class="w">    </span><span class="nv">$CONTROLLER3_SSH</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
-<span class="k">done</span>
-</code></pre></div>
-<p>3- Make sure all the services are stopped</p>
 <h2 id="procedure-data-copy">Procedure - data copy<a class="headerlink" href="#procedure-data-copy" title="Permanent link">#</a></h2>
 <ul>
 <li>Create a temporary folder to store DB dumps and make sure it's the
@@ -850,9 +814,9 @@ cd ~/adoption-db
 </ul>
 <div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE bash &lt;&lt;EOF
 
-mysql -h $EXTERNAL_MARIADB_IP -u root &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot; -N -e &#39;show databases&#39; | while read dbname; do
+mysql -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -N -e &#39;show databases&#39; | while read dbname; do
     echo &quot;Exporting \$dbname&quot;
-    mysqldump -h $EXTERNAL_MARIADB_IP -uroot &quot;-p$EXTERNAL_DB_ROOT_PASSWORD&quot; \
+    mysqldump -h $SOURCE_MARIADB_IP -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; \
         --single-transaction --complete-insert --skip-lock-tables --lock-tables=0 \
         --databases &quot;\$dbname&quot; \
         &gt; &quot;\$dbname&quot;.sql
@@ -882,7 +846,7 @@ done
   <small>
     
       Last update:
-      2023-06-05
+      2023-06-15
     
   </small>
 </div>
@@ -926,7 +890,7 @@ done
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a51614de.min.js"></script>
       
     
   </body>

@@ -21,7 +21,7 @@
         <link rel="next" href="../tests/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.15">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
@@ -615,6 +615,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ntp-server" class="md-nav__link">
+    NTP Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ceph" class="md-nav__link">
     Ceph
   </a>
@@ -624,6 +631,20 @@
           <li class="md-nav__item">
   <a href="#openstack" class="md-nav__link">
     OpenStack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convenience-steps" class="md-nav__link">
+    Convenience steps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-networks" class="md-nav__link">
+    Route networks
   </a>
   
 </li>
@@ -780,6 +801,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ntp-server" class="md-nav__link">
+    NTP Server
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#ceph" class="md-nav__link">
     Ceph
   </a>
@@ -789,6 +817,20 @@
           <li class="md-nav__item">
   <a href="#openstack" class="md-nav__link">
     OpenStack
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#convenience-steps" class="md-nav__link">
+    Convenience steps
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#route-networks" class="md-nav__link">
+    Route networks
   </a>
   
 </li>
@@ -1046,7 +1088,9 @@ os-net-config template only has the Neutron public interface as a member.
 To prevent this, copy
 <a href="../development_environment_examples/standalone.j2">this standalone.j2 template file</a>
 (which retains the VLANs above) into tripleo-ansible's <code>tripleo_network_config</code> role.
-<div class="highlight"><pre><span></span><code>sudo cp standalone.j2 /usr/share/ansible/roles/tripleo_network_config/templates/standalone.j2
+<div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/standalone.j2
+
+sudo cp standalone.j2 /usr/share/ansible/roles/tripleo_network_config/templates/standalone.j2
 </code></pre></div></p>
 <p>Assign VIPs to the networks created when os-net-config was run.
 The tenant network on vlan22 does not require a VIP.
@@ -1055,6 +1099,20 @@ sudo ip addr add 172.18.0.2/32 dev vlan21
 sudo ip addr add 172.20.0.2/32 dev vlan23
 sudo ip addr add 172.21.0.2/32 dev vlan44
 </code></pre></div></p>
+<h3 id="ntp-server">NTP Server<a class="headerlink" href="#ntp-server" title="Permanent link">#</a></h3>
+<p>Clock synchronization is important for both Ceph and OpenStack services, so
+both <code>ceph deploy</code> and <code>tripleo deploy</code> commands will make use of chrony to
+ensure the clock is properly in sync.</p>
+<p>We'll use the <code>NTP_SERVER</code> environmental variable to define the NTP server to
+use.</p>
+<p>If we are running alls these commands in a system inside the Red Hat network we
+should use the <code>clock.corp.redhat.com</code> server:</p>
+<div class="highlight"><pre><span></span><code>export NTP_SERVER=clock.corp.redhat.com
+</code></pre></div>
+<p>And when running it from our own systems outside of the Red Hat network we can
+use any available server:</p>
+<div class="highlight"><pre><span></span><code>export NTP_SERVER=pool.ntp.org
+</code></pre></div>
 <h3 id="ceph">Ceph<a class="headerlink" href="#ceph" title="Permanent link">#</a></h3>
 <p>These steps are based on <a href="https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/standalone.html">TripleO Standalone</a>
 to configure Ceph on the Standalone node to simulate an HCI or
@@ -1109,7 +1167,9 @@ EOF
 Use the files created in the previous steps to install Ceph. Use
 <a href="../development_environment_examples/network_data.yaml">this network_data.yaml file</a>
 so that Ceph uses the isolated networks for storage and storage management.</p>
-<p><div class="highlight"><pre><span></span><code>sudo openstack overcloud ceph deploy \
+<p><div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/network_data.yaml
+
+sudo openstack overcloud ceph deploy \
      --mon-ip $CEPH_IP \
      --ceph-spec $HOME/ceph_spec.yaml \
      --config $HOME/initial_ceph.conf \
@@ -1119,7 +1179,7 @@ so that Ceph uses the isolated networks for storage and storage management.</p>
      --skip-container-registry-config \
      --skip-user-create \
      --network-data network_data.yaml \
-     --ntp-server clock.corp.redhat.com \
+     --ntp-server $NTP_SERVER \
      --output $HOME/deployed_ceph.yaml
 </code></pre></div>
 Ceph should now be installed. Use <code>sudo cephadm shell -- ceph -s</code>
@@ -1133,12 +1193,15 @@ The deployed_network.yaml file hard codes the IPs and VIPs configured
 from the Networking section.</p>
 <p>Create standalone_parameters.yaml file and deploy standalone OpenStack
 using the following commands.</p>
-<div class="highlight"><pre><span></span><code>export NEUTRON_INTERFACE=eth0
+<p>Remember that should have exported the <code>NTP_SERVER</code> environmental variable
+earlier in the process.</p>
+<div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/deployed_network.yaml
+
+export NEUTRON_INTERFACE=eth0
 export CTLPLANE_IP=192.168.122.100
 export CTLPLANE_VIP=192.168.122.99
 export CIDR=24
 export DNS_SERVERS=192.168.122.1
-export NTP_SERVER=clock.corp.redhat.com
 export GATEWAY=192.168.122.1
 export BRIDGE=&quot;br-ctlplane&quot;
 
@@ -1188,6 +1251,23 @@ sudo openstack tripleo deploy \
   --local-ip=$CTLPLANE_IP/$CIDR \
   --control-virtual-ip=$CTLPLANE_VIP \
   --output-dir $HOME
+</code></pre></div>
+<h3 id="convenience-steps">Convenience steps<a class="headerlink" href="#convenience-steps" title="Permanent link">#</a></h3>
+<p>To make our life easier we can copy the deployment passwords we'll be using
+in the <a href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/backend_services_deployment/">backend services deployment phase of the data plane adoption</a>.</p>
+<div class="highlight"><pre><span></span><code>scp -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100:/root/tripleo-standalone-passwords.yaml ~/
+</code></pre></div>
+<p>If we want to be able to easily run <code>openstack</code> commands from the host without
+actually installing the package and copying the configuration file from the VM
+we can create a simple alias:</p>
+<div class="highlight"><pre><span></span><code>alias openstack=&quot;ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100 OS_CLOUD=standalone openstack&quot;
+</code></pre></div>
+<h3 id="route-networks">Route networks<a class="headerlink" href="#route-networks" title="Permanent link">#</a></h3>
+<p>Route VLAN20 to have access to the MariaDB cluster:</p>
+<div class="highlight"><pre><span></span><code>EDPM_BRIDGE=$(sudo virsh dumpxml edpm-compute-0 | grep -oP &quot;(?&lt;=bridge=&#39;).*(?=&#39;)&quot;)
+sudo ip link add link $EDPM_BRIDGE name vlan20 type vlan id 20
+sudo ip addr add dev vlan20 172.17.0.222/24
+sudo ip link set up dev vlan20
 </code></pre></div>
 <h3 id="snapshotrevert">Snapshot/revert<a class="headerlink" href="#snapshotrevert" title="Permanent link">#</a></h3>
 <p>When the deployment of the Standalone OpenStack is finished, it's a
@@ -1372,7 +1452,7 @@ The same pattern can be applied to other services.</p>
   <small>
     
       Last update:
-      2023-06-02
+      2023-06-14
     
   </small>
 </div>
@@ -1416,7 +1496,7 @@ The same pattern can be applied to other services.</p>
     <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b4d07000.min.js"></script>
+      <script src="../../assets/javascripts/bundle.a51614de.min.js"></script>
       
     
   </body>

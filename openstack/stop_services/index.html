@@ -12,20 +12,16 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/cinder_adoption/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/stop_services/">
       
       
-        <link rel="prev" href="../placement_adoption/">
-      
-      
-        <link rel="next" href="../other_services_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.16">
     
     
       
-        <title>Cinder adoption - OpenStack Data Plane Adoption</title>
+        <title>Stop OpenStack services - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#cinder-adoption" class="md-skip">
+        <a href="#stop-openstack-services" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Cinder adoption
+              Stop OpenStack services
             
           </span>
         </div>
@@ -269,16 +265,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
       
@@ -287,7 +281,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -382,80 +376,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Cinder adoption
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../cinder_adoption/" class="md-nav__link">
         Cinder adoption
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-cinder-adoption" class="md-nav__link">
-    Procedure - Cinder adoption
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -676,13 +601,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#variables" class="md-nav__link">
     Variables
   </a>
@@ -697,15 +615,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-cinder-adoption" class="md-nav__link">
-    Procedure - Cinder adoption
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
+  <a href="#stopping-control-plane-services" class="md-nav__link">
+    Stopping control plane services
   </a>
   
 </li>
@@ -728,53 +639,101 @@
   
 
 
-<h1 id="cinder-adoption">Cinder adoption<a class="headerlink" href="#cinder-adoption" title="Permanent link">#</a></h1>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
-<ul>
-<li>Previous Adoption steps completed. Notably, the service databases
-  must already be imported into the podified MariaDB.</li>
-</ul>
+<h1 id="stop-openstack-services">Stop OpenStack services<a class="headerlink" href="#stop-openstack-services" title="Permanent link">#</a></h1>
+<p>Before we can start with the adoption we need to make sure that the OpenStack
+services have been stopped.</p>
+<p>This is an important step to avoid inconsistencies in the data migrated for the
+data-plane adoption procedure caused by resource changes after the DB has been
+copied to the new deployment.</p>
+<p>Some services are easy to stop because they only perform short asynchronous
+operations, but other services are a bit more complex to gracefully stop
+because they perform synchronous or long running operations that we may want to
+complete instead of aborting them.</p>
+<p>Since gracefully stopping all services is non-trivial and beyond the scope of
+this guide we'll proceed with the force method but present a couple of
+recommendations on how to check some things in the services.</p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
-<p>(There are no shell variables necessary currently.)</p>
-<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
-<h2 id="procedure-cinder-adoption">Procedure - Cinder adoption<a class="headerlink" href="#procedure-cinder-adoption" title="Permanent link">#</a></h2>
-<ul>
-<li>Patch OpenStackControlPlane to deploy Cinder:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc patch openstackcontrolplane openstack --type=merge --patch &#39;
-spec:
-  cinder:
-    enabled: true
-    template:
-      databaseInstance: openstack
-      secret: osp-secret
-      cinderAPI:
-        externalEndpoints:
-        - endpoint: internal
-          ipAddressPool: internalapi
-          loadBalancerIPs:
-          - 172.17.0.80
-      cinderBackup:
-        networkAttachments:
-        - storage
-        replicas: 0 # backend needs to be configured
-      cinderVolumes:
-        volume1:
-          networkAttachments:
-          - storage
-          replicas: 0 # backend needs to be configured
-&#39;
+<p>Define the shell variables used in the steps below. The values are
+just illustrative, use values that are correct for your environment:</p>
+<div class="highlight"><pre><span></span><code>CONTROLLER1_SSH=&quot;ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100&quot;
+CONTROLLER2_SSH=&quot;&quot;
+CONTROLLER3_SSH=&quot;&quot;
 </code></pre></div>
-<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>See that Cinder endpoints are defined and pointing to the podified
-  FQDNs:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>export OS_CLIENT_CONFIG_FILE=clouds-adopted.yaml
-export OS_CLOUD=adopted
+<p>We chose to use these ssh variables with the ssh commands instead of using
+ansible to try to create instructions that are independent on where they are
+running, but ansible commands could be used to achieve the same result if we
+are in the right host, for example to stop a service:</p>
+<div class="highlight"><pre><span></span><code>. stackrc ansible -i $(which tripleo-ansible-inventory) Controller -m shell -a &quot;sudo systemctl stop tripleo_horizon.service&quot; -b
+</code></pre></div>
+<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
+<p>We can stop OpenStack services at any moment, but we may leave things in an
+undesired state, so at the very least we should have a look to confirm that
+there are no long running operations that require other services.</p>
+<p>Ensure that there are no ongoing instance live migrations, volume migrations
+(online or offline), volume creation, backup restore, attaching, detaching,
+etc.</p>
+<div class="highlight"><pre><span></span><code>openstack server list --all-projects -c ID -c Status |grep -E &#39;\| .+ing \|&#39;
+openstack volume list --all-projects -c ID -c Status |grep -E &#39;\| .+ing \|&#39;| grep -vi error
+openstack volume backup list --all-projects -c ID -c Status |grep -E &#39;\| .+ing \|&#39; | grep -vi error
+openstack image list -c ID -c Status |grep -E &#39;\| .+ing \|&#39;
+</code></pre></div>
+<h2 id="stopping-control-plane-services">Stopping control plane services<a class="headerlink" href="#stopping-control-plane-services" title="Permanent link">#</a></h2>
+<p>We can stop OpenStack services at any moment, but we may leave things in an
+undesired state, so at the very least we should have a look to confirm that
+there are no ongoing  operations.</p>
+<p>1- Connect to all the controller nodes.
+2- Stop the services.
+3- Make sure all the services are stopped.</p>
+<p>These steps can be automated with a simple script that relies on the previously
+defined environmental variables and function:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Update the services list to be stopped</span>
+<span class="nv">ServicesToStop</span><span class="o">=(</span><span class="s2">&quot;tripleo_horizon.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_keystone.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_cinder_api.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_cinder_api_cron.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_cinder_scheduler.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_glance_api.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_neutron_api.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_nova_api.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_placement_api.service&quot;</span><span class="o">)</span>
 
-openstack endpoint list | grep cinder
-openstack volume type list
+<span class="nv">PacemakerResourcesToStop</span><span class="o">=(</span><span class="s2">&quot;haproxy-bundle&quot;</span><span class="o">)</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping systemd OpenStack services&quot;</span>
+<span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..3<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="nv">SSH_CMD</span><span class="o">=</span>CONTROLLER<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_SSH
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping the </span><span class="nv">$service</span><span class="s2"> in controller </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>stop<span class="w"> </span><span class="nv">$service</span>
+<span class="w">        </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">done</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Checking systemd OpenStack services&quot;</span>
+<span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..3<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">        </span><span class="nv">SSH_CMD</span><span class="o">=</span>CONTROLLER<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_SSH
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">            </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Checking status of </span><span class="nv">$service</span><span class="s2"> in controller </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span>!<span class="w"> </span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="w"> </span>systemctl<span class="w"> </span>show<span class="w"> </span><span class="nv">$service</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="nv">ActiveState</span><span class="o">=</span>inactive<span class="w"> </span>&gt;/dev/null<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">               </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;ERROR: Service </span><span class="nv">$service</span><span class="s2"> still running on controller </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="w">            </span><span class="k">fi</span>
+<span class="w">        </span><span class="k">fi</span>
+<span class="w">    </span><span class="k">done</span>
+<span class="k">done</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping pacemaker OpenStack services&quot;</span>
+<span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..3<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nv">SSH_CMD</span><span class="o">=</span>CONTROLLER<span class="si">${</span><span class="nv">i</span><span class="si">}</span>_SSH
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Using controller </span><span class="nv">$i</span><span class="s2"> to run pacemaker commands&quot;</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span>resource<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">PacemakerResourcesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">            </span><span class="si">${</span><span class="p">!SSH_CMD</span><span class="si">}</span><span class="w"> </span>sudo<span class="w"> </span>pcs<span class="w"> </span>resource<span class="w"> </span>disable<span class="w"> </span><span class="nv">$resource</span>
+<span class="w">        </span><span class="k">done</span>
+<span class="w">        </span><span class="k">break</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">done</span>
 </code></pre></div>
 
   <hr>
@@ -782,7 +741,7 @@ openstack volume type list
   <small>
     
       Last update:
-      2023-06-08
+      2023-06-15
     
   </small>
 </div>
