@@ -782,72 +782,6 @@
 <span class="k">done</span>
 </code></pre></div>
 <ul>
-<li>Deploy OpenStackDataPlaneService(s):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
-  apiVersion: dataplane.openstack.org/v1beta1
-  kind: OpenStackDataPlaneService
-  metadata:
-    labels:
-      app.kubernetes.io/name: openstackdataplaneservice
-      app.kubernetes.io/instance: openstackdataplaneservice-sample
-      app.kubernetes.io/part-of: dataplane-operator
-      app.kubernetes.io/managed-by: kustomize
-      app.kubernetes.io/created-by: dataplane-operator
-    name: configure-network
-  spec:
-    label: dataplane-deployment-configure-network
-    role:
-
-      name: &quot;Deploy EDPM Network&quot;
-      hosts: &quot;all&quot;
-      strategy: &quot;linear&quot;
-      tasks:
-        - name: &quot;Install edpm_bootstrap&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_bootstrap&quot;
-            tasks_from: &quot;bootstrap.yml&quot;
-          tags:
-            - &quot;edpm_bootstrap&quot;
-        - name: &quot;Grow volumes&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_growvols&quot;
-            tasks_from: &quot;main.yml&quot;
-          tags:
-            - &quot;edpm_growvols&quot;
-        - name: &quot;Install edpm_kernel&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_kernel&quot;
-            tasks_from: &quot;main.yml&quot;
-          tags:
-            - &quot;edpm_kernel&quot;
-        - name: &quot;Import edpm_tuned&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_tuned&quot;
-            tasks_from: &quot;main.yml&quot;
-          tags:
-            - &quot;edpm_tuned&quot;
-        - name: &quot;Configure Kernel Args&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_kernel&quot;
-            tasks_from: &quot;kernelargs.yml&quot;
-          tags:
-            - &quot;edpm_kernel&quot;
-        - name: &quot;Configure Hosts Entries&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_hosts_entries&quot;
-            tasks_from: &quot;main.yml&quot;
-          tags:
-            - &quot;edpm_hosts_entries&quot;
-        - name: &quot;import edpm_network_config&quot;
-          import_role:
-            name: &quot;osp.edpm.edpm_network_config&quot;
-            tasks_from: &quot;main.yml&quot;
-          tags:
-            - &quot;edpm_network_config&quot;
-  EOF
-</code></pre></div>
-<ul>
 <li>Deploy OpenStackDataPlane:</li>
 </ul>
 <p><div class="highlight"><pre><span></span><code>oc apply -f - &lt;&lt;EOF
@@ -871,9 +805,8 @@
             ctlplane_ip: {{ edpm_node_ip }}
             internal_api_ip: 172.17.0.100
             storage_ip: 172.18.0.100
-            tenant_ip: 172.10.0.100
+            tenant_ip: 172.19.0.100
             fqdn_internal_api: &#39;{{&#39;{{ ansible_fqdn }}&#39;}}&#39;
-        openStackAnsibleEERunnerImage: quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
         role: edpmadoption
     roles:
       edpmadoption:
@@ -884,16 +817,47 @@
           - internalapi
           - storage
           - tenant
+        preProvisioned: true
         services:
           - configure-network
+          - validate-network
+          - install-os
+          - configure-os
+          - run-os
         env:
           - name: ANSIBLE_FORCE_COLOR
             value: &quot;True&quot;
           - name: ANSIBLE_ENABLE_TASK_DEBUGGER
             value: &quot;True&quot;
-          - name: ANSIBLE_VERBOSITY
-            value: &quot;2&quot;
         nodeTemplate:
+          # Defining the novaTemplate here means the nodes in this role are
+          # computes and they will have Ceph RBD config overrides
+          nova:
+            cellName: cell1
+            customServiceConfig: |
+              [libvirt]
+              images_type=rbd
+              images_rbd_pool=vms
+              images_rbd_ceph_conf=/etc/ceph/ceph.conf
+              images_rbd_glance_store_name=default_backend
+              images_rbd_glance_copy_poll_interval=15
+              images_rbd_glance_copy_timeout=600
+              rbd_user=openstack
+              rbd_secret_uuid=$(oc get secret ceph-conf-files -o json | jq -r &#39;.data.&quot;ceph.conf&quot;&#39; | base64 -d | grep fsid | sed -e &#39;s/fsid = //&#39;)
+            deploy: true
+            novaInstance: nova
+          # The Ansible Pod will mount these files and copy them to nodes in role
+          extraMounts:
+          - extraVolType: Ceph
+            mounts:
+            - mountPath: /etc/ceph
+              name: ceph
+              readOnly: true
+            volumes:
+            - name: ceph
+              secret:
+                secretName: ceph-conf-files
+          managementNetwork: ctlplane
           ansiblePort: 22
           ansibleSSHPrivateKeySecret: dataplane-adoption-secret
           ansibleUser: root
@@ -901,21 +865,23 @@
             service_net_map:
               nova_api_network: internal_api
               nova_libvirt_network: internal_api
+
             # edpm_network_config
             # Default nic config template for a EDPM compute node
             # These vars are edpm_network_config role vars
             edpm_network_config_template: templates/single_nic_vlans/single_nic_vlans.j2
             edpm_network_config_hide_sensitive_logs: false
+            #
             # These vars are for the network config templates themselves and are
             # considered EDPM network defaults.
             neutron_physical_bridge_name: br-ctlplane
             neutron_public_interface_name: eth1
             ctlplane_mtu: 1500
             ctlplane_subnet_cidr: 24
-            ctlplane_gateway_ip: 192.168.121.1
+            ctlplane_gateway_ip: 192.168.122.1
             ctlplane_host_routes:
             - ip_netmask: 0.0.0.0/0
-              next_hop: 192.168.121.1
+              next_hop: 192.168.122.1
             external_mtu: 1500
             external_vlan_id: 44
             external_cidr: &#39;24&#39;
@@ -941,23 +907,25 @@
               InternalApi: internal_api
               Storage: storage
               Tenant: tenant
+
             # edpm_nodes_validation
             edpm_nodes_validation_validate_controllers_icmp: false
             edpm_nodes_validation_validate_gateway_icmp: false
 
-            edpm_ovn_metadata_agent_DEFAULT_transport_url: rabbit://default_user_-secret@rabbitmq.openstack.svc:5672
-            edpm_ovn_metadata_agent_metadata_agent_ovn_ovn_sb_connection: tcp:172.17.0.31:6642
-            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_nova_metadata_host: 127.0.0.1
-            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_metadata_proxy_shared_secret: 12345678
+            edpm_ovn_metadata_agent_DEFAULT_transport_url: $(oc get secret rabbitmq-transport-url-neutron-neutron-transport -o json | jq -r .data.transport_url | base64 -d)
+            edpm_ovn_metadata_agent_metadata_agent_ovn_ovn_sb_connection: $(oc get ovndbcluster ovndbcluster-sb -o json | jq -r .status.dbAddress)
+            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_nova_metadata_host: $(oc get svc nova-metadata-internal -o json |jq -r &#39;.status.loadBalancer.ingress[0].ip&#39;)
+            edpm_ovn_metadata_agent_metadata_agent_DEFAULT_metadata_proxy_shared_secret: 1234567842
             edpm_ovn_metadata_agent_DEFAULT_bind_host: 127.0.0.1
             edpm_chrony_ntp_servers:
-            - clock.corp.redhat.com
+            - clock.redhat.com
+            - clock2.redhat.com
 
             ctlplane_dns_nameservers:
-            - 192.168.121.1
+            - $(oc get svc -l service=dnsmasq -o json | jq -r &#39;.items[0].status.loadBalancer.ingress[0].ip&#39;)
             dns_search_domains: []
             edpm_ovn_dbs:
-            - 172.17.0.31
+            - $(oc get ovndbcluster ovndbcluster-sb -o json | jq -r &#39;.status.networkAttachments.&quot;openstack/internalapi&quot;[0]&#39;)
 
             edpm_ovn_controller_agent_image: quay.io/podified-antelope-centos9/openstack-ovn-controller:current-podified
             edpm_iscsid_image: quay.io/podified-antelope-centos9/openstack-iscsid:current-podified
@@ -968,7 +936,6 @@
 
             gather_facts: false
             enable_debug: false
-            verbosity: 4
             # edpm firewall, change the allowed CIDR if needed
             edpm_sshd_configure_firewall: true
             edpm_sshd_allowed_ranges: [&#39;192.168.122.0/24&#39;]
@@ -983,9 +950,6 @@
             edpm_hosts_entries_vip_hosts_entries: []
             hosts_entries: []
             hosts_entry: []
-          managed: false
-          managementNetwork: ctlplane
-        openStackAnsibleEERunnerImage: quay.io/openstack-k8s-operators/openstack-ansibleee-runner:latest
   EOF
 </code></pre></div>
 Note: Role vars will be inherited by nodes, more details <a href="https://openstack-k8s-operators.github.io/dataplane-operator/inheritance/">here</a></p>
@@ -1001,7 +965,7 @@ Note: Role vars will be inherited by nodes, more details <a href="https://openst
   <small>
     
       Last update:
-      2023-05-16
+      2023-06-23
     
   </small>
 </div>
