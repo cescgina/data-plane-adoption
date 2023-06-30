@@ -654,7 +654,8 @@ this guide we'll proceed with the force method but present a couple of
 recommendations on how to check some things in the services.</p>
 <h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
 <p>Define the shell variables used in the steps below. The values are
-just illustrative, use values that are correct for your environment:</p>
+just illustrative and refer to a single node standalone director deployment,
+use values that are correct for your environment:</p>
 <div class="highlight"><pre><span></span><code>CONTROLLER1_SSH=&quot;ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100&quot;
 CONTROLLER2_SSH=&quot;&quot;
 CONTROLLER3_SSH=&quot;&quot;
@@ -684,6 +685,9 @@ there are no ongoing  operations.</p>
 <p>1- Connect to all the controller nodes.
 2- Stop the services.
 3- Make sure all the services are stopped.</p>
+<p>The cinder-backup service on OSP 17.1 could be running as Active-Passive under
+pacemaker or as Active-Active, so we'll have to check how it's running and
+stop it.</p>
 <p>These steps can be automated with a simple script that relies on the previously
 defined environmental variables and function:</p>
 <div class="highlight"><pre><span></span><code><span class="c1"># Update the services list to be stopped</span>
@@ -692,12 +696,15 @@ defined environmental variables and function:</p>
 <span class="w">                </span><span class="s2">&quot;tripleo_cinder_api.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_cinder_api_cron.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_cinder_scheduler.service&quot;</span>
+<span class="w">                </span><span class="s2">&quot;tripleo_cinder_backup.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_glance_api.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_neutron_api.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_nova_api.service&quot;</span>
 <span class="w">                </span><span class="s2">&quot;tripleo_placement_api.service&quot;</span><span class="o">)</span>
 
-<span class="nv">PacemakerResourcesToStop</span><span class="o">=(</span><span class="s2">&quot;haproxy-bundle&quot;</span><span class="o">)</span>
+<span class="nv">PacemakerResourcesToStop</span><span class="o">=(</span><span class="s2">&quot;haproxy-bundle&quot;</span>
+<span class="w">                          </span><span class="s2">&quot;openstack-cinder-volume&quot;</span>
+<span class="w">                          </span><span class="s2">&quot;openstack-cinder-backup&quot;</span><span class="o">)</span>
 
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Stopping systemd OpenStack services&quot;</span>
 <span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="si">${</span><span class="nv">ServicesToStop</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
@@ -741,7 +748,7 @@ defined environmental variables and function:</p>
   <small>
     
       Last update:
-      2023-06-15
+      2023-06-23
     
   </small>
 </div>

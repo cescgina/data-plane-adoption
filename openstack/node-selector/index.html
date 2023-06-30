@@ -12,20 +12,16 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/mariadb_copy/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/node-selector/">
       
       
-        <link rel="prev" href="../backend_services_deployment/">
-      
-      
-        <link rel="next" href="../ovn_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>MariaDB data copy - OpenStack Data Plane Adoption</title>
+        <title>Node selector - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mariadb-data-copy" class="md-skip">
+        <a href="#node-selector" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MariaDB data copy
+              Node selector
             
           </span>
         </div>
@@ -269,16 +265,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
       
@@ -287,7 +281,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -312,80 +306,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          MariaDB data copy
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-data-copy" class="md-nav__link">
-    Procedure - data copy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -676,36 +601,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-data-copy" class="md-nav__link">
-    Procedure - data copy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
+  <a href="#machineconfig" class="md-nav__link">
+    MachineConfig
   </a>
   
 </li>
@@ -728,125 +625,128 @@
   
 
 
-<h1 id="mariadb-data-copy">MariaDB data copy<a class="headerlink" href="#mariadb-data-copy" title="Permanent link">#</a></h1>
-<p>This document describes how to move the databases from the original
-OpenStack deployment to the MariaDB instances in the OpenShift
-cluster.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
+<h1 id="node-selector">Node Selector<a class="headerlink" href="#node-selector" title="Permanent link">#</a></h1>
+<p>There are a variety of reasons why we may want to restrict the nodes where
+OpenStack services can be placed:</p>
 <ul>
-<li>
-<p>Make sure the previous Adoption steps have been performed successfully.</p>
-</li>
-<li>
-<p>The OpenStackControlPlane resource must be already created at this point.</p>
-</li>
-<li>
-<p>Podified MariaDB and RabbitMQ are running. No other podified
-    control plane services are running.</p>
-</li>
-<li>
-<p>OpenStack services have been stopped</p>
-</li>
-<li>
-<p>There must be network routability between:</p>
+<li>Hardware requirements: System memory, Disk space, Cores, HBAs</li>
+<li>Limit the impact of the OpenStack services on other OpenShift workloads.</li>
+<li>Avoid collocating OpenStack services.</li>
+</ul>
+<p>The mechanism provided by the OpenStack operators to achieve this is through the
+use of labels.</p>
+<p>We would either label the OpenShift nodes or use existing labels they already
+have, and then use those labels in the OpenStack manifests in the
+<code>nodeSelector</code> field.</p>
+<p>The <code>nodeSelector</code> field in the OpenStack manifests follows the standard
+OpenShift <code>nodeSelector</code> field, please refer to <a href="https://docs.openshift.com/container-platform/4.13/nodes/scheduling/nodes-scheduler-node-selectors.html">the OpenShift documentation on
+the matter</a>
+additional information.</p>
+<p>This field is present at all the different levels of the OpenStack manifests:</p>
 <ul>
-<li>
-<p>The adoption host and the original MariaDB.</p>
-</li>
-<li>
-<p>The adoption host and the podified MariaDB.</p>
-</li>
-<li>
-<p><em>Note that this routability requirement may change in the
-  future, e.g. we may require routability from the original MariaDB to
-  podified MariaDB</em>.</p>
-</li>
+<li>Deployment: The <code>OpenStackControlPlane</code> object.</li>
+<li>Component: For example the <code>cinder</code> element in the <code>OpenStackControlPlane</code>.</li>
+<li>Service: For example the <code>cinderVolume</code> element within the <code>cinder</code> element
+  in the <code>OpenStackControlPlane</code>.</li>
 </ul>
-</li>
-<li>
-<p>Podman package is installed</p>
-</li>
-<li>
-<p><code>CONTROLLER1_SSH</code>, <code>CONTROLLER2_SSH</code>, and <code>CONTROLLER3_SSH</code> are configured.</p>
-</li>
-</ul>
-<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
-<p>Define the shell variables used in the steps below. The values are
-just illustrative, use values that are correct for your environment:</p>
-<div class="highlight"><pre><span></span><code>PODIFIED_MARIADB_IP=$(oc get -o yaml pod mariadb-openstack | grep podIP: | awk &#39;{ print $2; }&#39;)
-MARIADB_IMAGE=quay.io/podified-antelope-centos9/openstack-mariadb:current-podified
-
-SOURCE_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-PODIFIED_DB_ROOT_PASSWORD=$(oc get -o json secret/osp-secret | jq -r .data.DbRootPassword | base64 -d)
-
-# Replace with your environment&#39;s MariaDB IP:
-SOURCE_MARIADB_IP=127.17.0.100
+<p>This allows a fine grained control of the placement of the OpenStack services
+with minimal repetition.</p>
+<p>Values of the <code>nodeSelector</code> are propagated to the next levels unless they are
+overwritten. This means that a <code>nodeSelector</code> value at the deployment level will
+affect all the OpenStack services.</p>
+<p>For example we can add label <code>type: openstack</code> to any 3 OpenShift nodes:</p>
+<div class="highlight"><pre><span></span><code>$<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>nodes<span class="w"> </span>worker0<span class="w"> </span><span class="nv">type</span><span class="o">=</span>openstack
+$<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>nodes<span class="w"> </span>worker1<span class="w"> </span><span class="nv">type</span><span class="o">=</span>openstack
+$<span class="w"> </span>oc<span class="w"> </span>label<span class="w"> </span>nodes<span class="w"> </span>worker2<span class="w"> </span><span class="nv">type</span><span class="o">=</span>openstack
 </code></pre></div>
-<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>Test connection to the original DB (show databases):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysql -h &quot;$SOURCE_MARIADB_IP&quot; -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
+<p>And then in our <code>OpenStackControlPlane</code> we can use the label to place all the
+services in those 3 nodes:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: core.openstack.org/v1beta1
+kind: OpenStackControlPlane
+metadata:
+  name: openstack
+spec:
+  secret: osp-secret
+  storageClass: local-storage
+  nodeSelector:
+    type: openstack
+&lt; . . . &gt;
 </code></pre></div>
-<ul>
-<li>Run mysqlcheck on the original DB to look for things that are not OK:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysqlcheck --all-databases -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; | grep -v OK
+<p>What if we don't mind where any OpenStack services go but the cinder volume and
+backup services because we are using FC and we only have HBAs on a subset of
+nodes? Then we can just use the selector on for those specific services, which
+for the sake of this example we'll assume they have the label <code>fc_card: true</code>:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: core.openstack.org/v1beta1
+kind: OpenStackControlPlane
+metadata:
+  name: openstack
+spec:
+  secret: osp-secret
+  storageClass: local-storage
+  cinder:
+    template:
+      cinderVolumes:
+          pure_fc:
+            nodeSelector:
+              fc_card: true
+&lt; . . . &gt;
+          lvm-iscsi:
+            nodeSelector:
+              fc_card: true
+&lt; . . . &gt;
+      cinderBackup:
+          nodeSelector:
+            fc_card: true
+&lt; . . . &gt;
 </code></pre></div>
-<ul>
-<li>Test connection to podified DB (show databases):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-    mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
+<p>The Cinder operator does not currently have the possibility of defining
+the <code>nodeSelector</code> in <code>cinderVolumes</code>, so we need to specify it on each of the
+backends.</p>
+<p>It's possible to leverage labels added by <a href="https://docs.openshift.com/container-platform/4.13/hardware_enablement/psap-node-feature-discovery-operator.html">the node feature discovery
+operator</a>
+to place OpenStack services.</p>
+<h2 id="machineconfig">MachineConfig<a class="headerlink" href="#machineconfig" title="Permanent link">#</a></h2>
+<p>Some services require us to have services or kernel modules running on the hosts
+where they run, for example <code>iscsid</code> or <code>multipathd</code> daemons, or the
+<code>nvme-fabrics</code> kernel module.</p>
+<p>For those cases we'll use <code>MachineConfig</code> manifests, and if we are restricting
+the nodes we are placing the OpenStack services using the <code>nodeSelector</code> then
+we'll also want to limit where the <code>MachineConfig</code> is applied.</p>
+<p>To define where the <code>MachineConfig</code> can be applied we'll need to use a
+<code>MachineConfigPool</code> that links the <code>MachineConfig</code> to the nodes.</p>
+<p>For example to be able to limit <code>MachineConfig</code> to the 3 OpenShift nodes we
+marked with the <code>type: openstack</code> label we would create the
+<code>MachineConfigPool</code> like this:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfigPool
+metadata:
+  name: openstack
+spec:
+  machineConfigSelector:
+    matchLabels:
+      machineconfiguration.openshift.io/role: openstack
+  nodeSelector:
+    matchLabels:
+      type: openstack
 </code></pre></div>
-<h2 id="procedure-data-copy">Procedure - data copy<a class="headerlink" href="#procedure-data-copy" title="Permanent link">#</a></h2>
-<ul>
-<li>Create a temporary folder to store DB dumps and make sure it's the
-  working directory for the following steps:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>mkdir ~/adoption-db
-cd ~/adoption-db
+<p>And then we could use it in the <code>MachineConfig</code>:</p>
+<div class="highlight"><pre><span></span><code>apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  labels:
+    machineconfiguration.openshift.io/role: openstack
+&lt; . . . &gt;
 </code></pre></div>
-<ul>
-<li>Create a dump of the original databases:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE bash &lt;&lt;EOF
-
-mysql -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -N -e &#39;show databases&#39; | while read dbname; do
-    echo &quot;Exporting \$dbname&quot;
-    mysqldump -h $SOURCE_MARIADB_IP -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; \
-        --single-transaction --complete-insert --skip-lock-tables --lock-tables=0 \
-        --databases &quot;\$dbname&quot; \
-        &gt; &quot;\$dbname&quot;.sql
-done
-
-EOF
-</code></pre></div>
-<ul>
-<li>Restore the databases from .sql files into the podified MariaDB:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>for dbname in cinder glance keystone nova_api nova_cell0 nova ovs_neutron placement; do
-    echo &quot;Importing $dbname&quot;
-    oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-       mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; &lt; &quot;$dbname.sql&quot;
-done
-</code></pre></div>
-<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>Check that the databases were imported correctly:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-   mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
-</code></pre></div>
+<p>Refer to the <a href="https://docs.openshift.com/container-platform/4.13/post_installation_configuration/machine-configuration-tasks.html">OpenShift documentation for additional information on <code>MachineConfig</code> and <code>MachineConfigPools</code></a></p>
+<p><strong>WARNING:</strong> Applying a <code>MachineConfig</code> to an OpenShift node will make the node
+reboot.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-06-28
+      2023-06-21
     
   </small>
 </div>

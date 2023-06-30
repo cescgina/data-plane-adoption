@@ -12,20 +12,16 @@
         <meta name="author" content="OpenStack Team">
       
       
-        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/mariadb_copy/">
+        <link rel="canonical" href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/planning/">
       
       
-        <link rel="prev" href="../backend_services_deployment/">
-      
-      
-        <link rel="next" href="../ovn_adoption/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
     
     
       
-        <title>MariaDB data copy - OpenStack Data Plane Adoption</title>
+        <title>Planning - OpenStack Data Plane Adoption</title>
       
     
     
@@ -77,7 +73,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#mariadb-data-copy" class="md-skip">
+        <a href="#planning-the-new-deployment" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MariaDB data copy
+              Planning
             
           </span>
         </div>
@@ -269,16 +265,14 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
       
       
-      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
       
       
       
@@ -287,7 +281,7 @@
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
         <label class="md-nav__title" for="__nav_2">
           <span class="md-nav__icon md-icon"></span>
           OpenStack
@@ -312,80 +306,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          MariaDB data copy
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../mariadb_copy/" class="md-nav__link">
         MariaDB data copy
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#procedure-data-copy" class="md-nav__link">
-    Procedure - data copy
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -676,37 +601,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+  <a href="#configurations" class="md-nav__link">
+    Configurations
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#variables" class="md-nav__link">
-    Variables
+  <a href="#node-roles" class="md-nav__link">
+    Node Roles
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pre-checks" class="md-nav__link">
-    Pre-checks
+  <a href="#network" class="md-nav__link">
+    Network
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#procedure-data-copy" class="md-nav__link">
-    Procedure - data copy
+  <a href="#storage" class="md-nav__link">
+    Storage
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cinder-requirements" class="md-nav__link">
+    Cinder requirements
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#post-checks" class="md-nav__link">
-    Post-checks
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -728,125 +659,164 @@
   
 
 
-<h1 id="mariadb-data-copy">MariaDB data copy<a class="headerlink" href="#mariadb-data-copy" title="Permanent link">#</a></h1>
-<p>This document describes how to move the databases from the original
-OpenStack deployment to the MariaDB instances in the OpenShift
-cluster.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
-<ul>
-<li>
-<p>Make sure the previous Adoption steps have been performed successfully.</p>
-</li>
-<li>
-<p>The OpenStackControlPlane resource must be already created at this point.</p>
-</li>
-<li>
-<p>Podified MariaDB and RabbitMQ are running. No other podified
-    control plane services are running.</p>
-</li>
-<li>
-<p>OpenStack services have been stopped</p>
-</li>
-<li>
-<p>There must be network routability between:</p>
-<ul>
-<li>
-<p>The adoption host and the original MariaDB.</p>
-</li>
-<li>
-<p>The adoption host and the podified MariaDB.</p>
-</li>
-<li>
-<p><em>Note that this routability requirement may change in the
-  future, e.g. we may require routability from the original MariaDB to
-  podified MariaDB</em>.</p>
-</li>
-</ul>
-</li>
-<li>
-<p>Podman package is installed</p>
-</li>
-<li>
-<p><code>CONTROLLER1_SSH</code>, <code>CONTROLLER2_SSH</code>, and <code>CONTROLLER3_SSH</code> are configured.</p>
-</li>
-</ul>
-<h2 id="variables">Variables<a class="headerlink" href="#variables" title="Permanent link">#</a></h2>
-<p>Define the shell variables used in the steps below. The values are
-just illustrative, use values that are correct for your environment:</p>
-<div class="highlight"><pre><span></span><code>PODIFIED_MARIADB_IP=$(oc get -o yaml pod mariadb-openstack | grep podIP: | awk &#39;{ print $2; }&#39;)
-MARIADB_IMAGE=quay.io/podified-antelope-centos9/openstack-mariadb:current-podified
-
-SOURCE_DB_ROOT_PASSWORD=$(cat ~/tripleo-standalone-passwords.yaml | grep &#39; MysqlRootPassword:&#39; | awk -F &#39;: &#39; &#39;{ print $2; }&#39;)
-PODIFIED_DB_ROOT_PASSWORD=$(oc get -o json secret/osp-secret | jq -r .data.DbRootPassword | base64 -d)
-
-# Replace with your environment&#39;s MariaDB IP:
-SOURCE_MARIADB_IP=127.17.0.100
+<h1 id="planning-the-new-deployment">Planning the new deployment<a class="headerlink" href="#planning-the-new-deployment" title="Permanent link">#</a></h1>
+<p>Just like you did back when you installed your Director deployed OpenStack, the
+upgrade/migration to the podified OpenStack requires planning various aspects
+of the environment such as node roles, planning your network topology, and
+storage.</p>
+<p>In this document we cover some of this planning, but it is recommended to read
+the whole adoption guide before actually starting the process to be sure that
+there is a global understanding of the whole process.</p>
+<h2 id="configurations">Configurations<a class="headerlink" href="#configurations" title="Permanent link">#</a></h2>
+<p>There is a fundamental difference between the Director and Operator deployments
+regarding the configuration of the services.</p>
+<p>In Director deployments many of the service configurations are abstracted by
+Director specific configuration options. A single Director option may trigger
+changes for multiple services and support for drivers (for example Cinder's)
+required patches to the Director code base.</p>
+<p>In Operator deployments this has changed to what we believe is a simpler
+approach: reduce the installer specific knowledge and leverage OpenShift and
+OpenStack service specific knowledge whenever possible.</p>
+<p>To this effect OpenStack services will have sensible defaults for OpenShift
+deployments and human operators will provide configuration snippets to provide
+necessary configuration, such as cinder backend configuration, or to override
+the defaults.</p>
+<p>This shortens the distance between a service specific configuration file (such
+as <code>cinder.conf</code>) and what the human operator provides in the manifests.</p>
+<p>These configuration snippets are passed to the operators in the different
+<code>customServiceConfig</code> sections available in the manifests, and then they are
+layered in the services available in the following levels. To illustrate this,
+if we were to set a configuration at the top Cinder level (<code>spec: cinder:
+template:</code>) then it would be applied to all the cinder services; for example to
+enable debug in all the cinder services we would do:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.openstack.org/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenStackControlPlane</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">customServiceConfig</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">[DEFAULT]</span>
+<span class="w">        </span><span class="no">debug = True</span>
+<span class="l l-Scalar l-Scalar-Plain">&lt; . . . &gt;</span>
 </code></pre></div>
-<h2 id="pre-checks">Pre-checks<a class="headerlink" href="#pre-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>Test connection to the original DB (show databases):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysql -h &quot;$SOURCE_MARIADB_IP&quot; -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
+<p>If we only wanted to set it for one of the cinder services, for example the
+scheduler, then we would use the <code>cinderScheduler</code> section instead:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">core.openstack.org/v1beta1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OpenStackControlPlane</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openstack</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">cinder</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cinderScheduler</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">customServiceConfig</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">[DEFAULT]</span>
+<span class="w">          </span><span class="no">debug = True</span>
+<span class="l l-Scalar l-Scalar-Plain">&lt; . . . &gt;</span>
 </code></pre></div>
-<ul>
-<li>Run mysqlcheck on the original DB to look for things that are not OK:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE \
-    mysqlcheck --all-databases -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; | grep -v OK
-</code></pre></div>
-<ul>
-<li>Test connection to podified DB (show databases):</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-    mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
-</code></pre></div>
-<h2 id="procedure-data-copy">Procedure - data copy<a class="headerlink" href="#procedure-data-copy" title="Permanent link">#</a></h2>
-<ul>
-<li>Create a temporary folder to store DB dumps and make sure it's the
-  working directory for the following steps:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>mkdir ~/adoption-db
-cd ~/adoption-db
-</code></pre></div>
-<ul>
-<li>Create a dump of the original databases:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>podman run -i --rm --userns=keep-id -u $UID -v $PWD:$PWD:z,rw -w $PWD $MARIADB_IMAGE bash &lt;&lt;EOF
-
-mysql -h $SOURCE_MARIADB_IP -u root &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; -N -e &#39;show databases&#39; | while read dbname; do
-    echo &quot;Exporting \$dbname&quot;
-    mysqldump -h $SOURCE_MARIADB_IP -uroot &quot;-p$SOURCE_DB_ROOT_PASSWORD&quot; \
-        --single-transaction --complete-insert --skip-lock-tables --lock-tables=0 \
-        --databases &quot;\$dbname&quot; \
-        &gt; &quot;\$dbname&quot;.sql
-done
-
-EOF
-</code></pre></div>
-<ul>
-<li>Restore the databases from .sql files into the podified MariaDB:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>for dbname in cinder glance keystone nova_api nova_cell0 nova ovs_neutron placement; do
-    echo &quot;Importing $dbname&quot;
-    oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-       mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; &lt; &quot;$dbname.sql&quot;
-done
-</code></pre></div>
-<h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
-<ul>
-<li>Check that the databases were imported correctly:</li>
-</ul>
-<div class="highlight"><pre><span></span><code>oc run mariadb-client --image $MARIADB_IMAGE -i --rm --restart=Never -- \
-   mysql -h &quot;$PODIFIED_MARIADB_IP&quot; -uroot &quot;-p$PODIFIED_DB_ROOT_PASSWORD&quot; -e &#39;SHOW databases;&#39;
-</code></pre></div>
+<p>In openshift it is not recommended to store sensitive information like the
+credentials to the cinder storage array in the CRs, so most OpenStack operators
+have a mechanism to use OpenShift's <code>Secrets</code> for sensitive configuration
+parameters of the services and then use then by reference in the
+<code>customServiceConfigSecrets</code> section which is analogous to the
+<code>customServiceConfig</code>.</p>
+<p>The contents of the <code>Secret</code> references passed in the
+<code>customServiceConfigSecrets</code> will have the same format as <code>customServiceConfig</code>:
+a snippet with the section/s and configuration options.</p>
+<p>When there are sensitive information in the service configuration then it
+becomes a matter of personal preference whether to store all the configuration
+in the <code>Secret</code> or only the sensitive parts, but remember that if we split the
+configuration between <code>Secret</code> and <code>customServiceConfig</code> we still need the
+section header (eg: <code>[DEFAULT]</code>) to be present in both places.</p>
+<p>Attention should be paid to each service's adoption process as they may have
+some particularities regarding their configuration.</p>
+<h2 id="node-roles">Node Roles<a class="headerlink" href="#node-roles" title="Permanent link">#</a></h2>
+<p>In Director deployments we had 4 different standard roles for the nodes:
+<code>Controller</code>, <code>Compute</code>, <code>Ceph Storage</code>, <code>Swift Storage</code>, but in podified
+OpenStack we just make a distinction based on where things are running, in
+OpenShift or external to it.</p>
+<p>When adopting a Director OpenStack your <code>Compute</code> nodes will directly become
+external nodes, so there should not be much additional planning needed there.</p>
+<p>In many deployments being adopted the <code>Controller</code> nodes will require some
+thought because we'll have many OpenShift nodes where the controller services
+could run, and we have to decide which ones we want to use, how we are going to
+use them, and make sure those nodes are ready to run the services.</p>
+<p>In most deployments running OpenStack services on <code>master</code> nodes can have a
+seriously adverse impact on the OpenShift cluster, so we recommend placing
+OpenStack services on non <code>master</code> nodes.</p>
+<p>By default OpenStack Operators deploy OpenStack services on any worker node, but
+that is not necessarily what's best for all deployments, and there may be even
+services that won't even work deployed like that.</p>
+<p>When planing a deployment it's good to remember that not all the services on an
+OpenStack deployments are the same as they have very different requirements.</p>
+<p>Looking at the Cinder component we can clearly see different requirements for
+its services: the cinder-scheduler is a very light service with low
+memory, disk, network, and CPU usage; cinder-api service has a higher network
+usage due to resource listing requests; the cinder-volume service will have a
+high disk and network usage since many of its operations are in the data path
+(offline volume migration, create volume from image, etc.), and then we have
+the cinder-backup service which has high memory, network, and CPU (to compress
+data) requirements.</p>
+<p>We also have the Glance and Swift components that are in the data path, and
+let's not forget RabbitMQ and Galera services.</p>
+<p>Given these requirements it may be preferable not to let these services wander
+all over your OpenShift worker nodes with the possibility of impacting other
+workloads, or maybe you don't mind the light services wandering around but you
+want to pin down the heavy ones to a set of infrastructure nodes.</p>
+<p>There are also hardware restrictions to take into consideration, because if we
+are using a Fibre Channel (FC) Cinder backend we'll need the cinder-volume,
+cinder-backup, and maybe even the glance (if it's using Cinder as a backend)
+services to run on a OpenShift host that has an HBA.</p>
+<p>The OpenStack Operators allow a great deal of flexibility on where to run the
+OpenStack services, as we can use node labels to define which OpenShift nodes
+are eligible to run the different OpenStack services.  Refer to the <a href="../node-selector/">Node
+Selector guide</a> to learn more about using labels to define
+placement of the OpenStack services.</p>
+<p><strong>TODO: Talk about Ceph Storage and Swift Storage nodes, HCI deployments,
+etc.</strong></p>
+<h2 id="network">Network<a class="headerlink" href="#network" title="Permanent link">#</a></h2>
+<p><strong>TODO: Write about isolated networks, NetworkAttachmentDefinition,
+NetworkAttachmets, etc</strong></p>
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">#</a></h2>
+<p>When looking into the storage in an OpenStack deployment we can differentiate
+2 different kinds, the storage requirements of the services themselves and the
+storage used for the OpenStack users that thee services will manage.</p>
+<p>These requirements may drive our OpenShift node selection, as mentioned above,
+and may even require us to do some preparations on the OpenShift nodes before
+we can deploy the services.</p>
+<p><strong>TODO: Galera, RabbitMQ, Swift, Glance, etc.</strong></p>
+<h3 id="cinder-requirements">Cinder requirements<a class="headerlink" href="#cinder-requirements" title="Permanent link">#</a></h3>
+<p>The Cinder service has both local storage used by the service and OpenStack user
+requirements.</p>
+<p>Local storage is used for example when downloading a glance image for the create
+volume from image operation, which can become considerable when having
+concurrent operations and not using cinder volume cache.</p>
+<p>In the Operator deployed OpenStack we now have an easy way to configure the
+location of the conversion directory to be an NFS share (using the extra
+volumes feature), something that needed to be done manually before.</p>
+<p>Even if it's an adoption and it may seem that there's nothing to consider
+regarding the Cinder backends, because we'll just be using the same ones we are
+using in our current deployment, we should still evaluate it, because it may not
+be so straightforward.</p>
+<p>First we need to check the transport protocol the Cinder backends are using:
+RBD, iSCSI, FC, NFS, NVMe-oF, etc.</p>
+<p>Once we know all the transport protocols we are using, we can proceed to make
+sure we are taking them into consideration when placing the Cinder services
+(as mentioned above in the Node Roles section) and the right storage transport
+related binaries are running on the OpenShift nodes.</p>
+<p>Detailed information about the specifics for each storage transport protocol can
+be found in the <a href="../cinder_adoption/">Cinder Adoption section</a>.  Please take a
+good look at that document before proceeding to be able to plan the adoption
+better.</p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2023-06-28
+      2023-06-23
     
   </small>
 </div>

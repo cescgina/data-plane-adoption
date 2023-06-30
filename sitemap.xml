@@ -61,6 +61,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/node-selector/</loc>
+         <lastmod>2023-06-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/other_services_adoption/</loc>
          <lastmod>2023-06-30</lastmod>
          <changefreq>daily</changefreq>
@@ -72,6 +77,11 @@
     </url>
     <url>
          <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/placement_adoption/</loc>
+         <lastmod>2023-06-30</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/planning/</loc>
          <lastmod>2023-06-30</lastmod>
          <changefreq>daily</changefreq>
     </url>

@@ -77,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#keystone-adoption" class="md-skip">
+        <a href="#prerequisites" class="md-skip">
           Skip to content
         </a>
       
@@ -348,8 +348,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
           Keystone adoption
@@ -365,8 +363,6 @@
 <nav class="md-nav md-nav--secondary" aria-label="Table of contents">
   
   
-  
-    
   
   
     <label class="md-nav__title" for="__toc">
@@ -666,8 +662,6 @@
   
   
   
-    
-  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -728,7 +722,8 @@
   
 
 
-<h1 id="keystone-adoption">Keystone adoption<a class="headerlink" href="#keystone-adoption" title="Permanent link">#</a></h1>
+  <h1>Keystone adoption</h1>
+
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">#</a></h2>
 <ul>
 <li>Previous Adoption steps completed. Notably, the service databases
@@ -756,49 +751,26 @@ spec:
 &#39;
 </code></pre></div>
 <ul>
-<li>Create a clouds.yaml file to talk to adopted Keystone:</li>
+<li>Create alias to use <code>openstack</code> command in the adopted deployment:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>cat &gt; clouds-adopted.yaml &lt;&lt;EOF
-clouds:
-  adopted:
-    auth:
-      auth_url: http://keystone-public-openstack.apps-crc.testing
-      password: $ADMIN_PASSWORD
-      project_domain_name: Default
-      project_name: admin
-      user_domain_name: Default
-      username: admin
-    cacert: &#39;&#39;
-    identity_api_version: &#39;3&#39;
-    region_name: regionOne
-    volume_api_version: &#39;3&#39;
-EOF
+<div class="highlight"><pre><span></span><code><span class="nb">alias</span><span class="w"> </span><span class="nv">openstack</span><span class="o">=</span><span class="s2">&quot;oc exec -t openstackclient -- openstack&quot;</span>
 </code></pre></div>
 <ul>
 <li>Clean up old services and endpoints that still point to the old
   control plane (everything except Keystone service and endpoints):</li>
 </ul>
-<div class="highlight"><pre><span></span><code>export OS_CLIENT_CONFIG_FILE=clouds-adopted.yaml
-export OS_CLOUD=adopted
+<div class="highlight"><pre><span></span><code>openstack<span class="w"> </span>endpoint<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>keystone<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;/admin/{ print $2; }&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="si">${</span><span class="nv">BASH_ALIASES</span><span class="p">[openstack]</span><span class="si">}</span><span class="w"> </span>endpoint<span class="w"> </span>delete<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
 
-openstack endpoint list | grep keystone | awk &#39;/admin/{ print $2; }&#39; | xargs openstack endpoint delete || true
-
-openstack service list | awk &#39;/ cinderv3 /{ print $2; }&#39; | xargs openstack service delete || true
-openstack service list | awk &#39;/ glance /{ print $2; }&#39; | xargs openstack service delete || true
-openstack service list | awk &#39;/ neutron /{ print $2; }&#39; | xargs openstack service delete || true
-openstack service list | awk &#39;/ nova /{ print $2; }&#39; | xargs openstack service delete || true
-openstack service list | awk &#39;/ placement /{ print $2; }&#39; | xargs openstack service delete || true
-openstack service list | awk &#39;/ swift /{ print $2; }&#39; | xargs openstack service delete || true
+<span class="k">for</span><span class="w"> </span>service<span class="w"> </span><span class="k">in</span><span class="w"> </span>cinderv3<span class="w"> </span>glance<span class="w"> </span>neutron<span class="w"> </span>nova<span class="w"> </span>placement<span class="w"> </span>swift<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>openstack<span class="w"> </span>service<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s2">&quot;/ </span><span class="nv">$service</span><span class="s2"> /{ print \$2; }&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>xargs<span class="w"> </span><span class="si">${</span><span class="nv">BASH_ALIASES</span><span class="p">[openstack]</span><span class="si">}</span><span class="w"> </span>service<span class="w"> </span>delete<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">true</span>
+<span class="k">done</span>
 </code></pre></div>
 <h2 id="post-checks">Post-checks<a class="headerlink" href="#post-checks" title="Permanent link">#</a></h2>
 <ul>
 <li>See that Keystone endpoints are defined and pointing to the podified
   FQDNs:</li>
 </ul>
-<div class="highlight"><pre><span></span><code>export OS_CLIENT_CONFIG_FILE=clouds-adopted.yaml
-export OS_CLOUD=adopted
-
-openstack endpoint list | grep keystone
+<div class="highlight"><pre><span></span><code>openstack<span class="w"> </span>endpoint<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>keystone
 </code></pre></div>
 
   <hr>
@@ -806,7 +778,7 @@ openstack endpoint list | grep keystone
   <small>
     
       Last update:
-      2023-06-08
+      2023-06-28
     
   </small>
 </div>
