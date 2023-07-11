@@ -21,7 +21,7 @@
         <link rel="next" href="../tests/">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.17">
+      <meta name="generator" content="mkdocs-1.4.3, mkdocs-material-9.1.18">
     
     
       
@@ -597,43 +597,8 @@
     Deployment of CRC with network isolation
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployment-of-wallaby-standalone-with-network-isolation" class="md-nav__link">
-    Deployment of Wallaby Standalone with network isolation
-  </a>
-  
-    <nav class="md-nav" aria-label="Deployment of Wallaby Standalone with network isolation">
+    <nav class="md-nav" aria-label="Deployment of CRC with network isolation">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#networking" class="md-nav__link">
-    Networking
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntp-server" class="md-nav__link">
-    NTP Server
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ceph" class="md-nav__link">
-    Ceph
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#openstack" class="md-nav__link">
-    OpenStack
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#convenience-steps" class="md-nav__link">
@@ -783,43 +748,8 @@
     Deployment of CRC with network isolation
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deployment-of-wallaby-standalone-with-network-isolation" class="md-nav__link">
-    Deployment of Wallaby Standalone with network isolation
-  </a>
-  
-    <nav class="md-nav" aria-label="Deployment of Wallaby Standalone with network isolation">
+    <nav class="md-nav" aria-label="Deployment of CRC with network isolation">
       <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#networking" class="md-nav__link">
-    Networking
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntp-server" class="md-nav__link">
-    NTP Server
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ceph" class="md-nav__link">
-    Ceph
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#openstack" class="md-nav__link">
-    OpenStack
-  </a>
-  
-</li>
         
           <li class="md-nav__item">
   <a href="#convenience-steps" class="md-nav__link">
@@ -971,288 +901,8 @@ Use the <a href="https://github.com/openstack-k8s-operators/install_yamls/tree/m
 to create a virtual machine connected to the isolated networks.</p>
 <p>Create the edpm-compute-0 virtual machine.
 <div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
-EDPM_COMPUTE_VCPUS=8 EDPM_COMPUTE_RAM=20 EDPM_COMPUTE_DISK_SIZE=70 make edpm_compute
-
-ssh -i ~/install_yamls/out/edpm/ansibleee-ssh-key-id_rsa root@192.168.122.100
+make standalone
 </code></pre></div></p>
-<h2 id="deployment-of-wallaby-standalone-with-network-isolation">Deployment of Wallaby Standalone with network isolation<a class="headerlink" href="#deployment-of-wallaby-standalone-with-network-isolation" title="Permanent link">#</a></h2>
-<p>The steps in this section should be run on the edpm-compute-0 virtual
-machine so that it's configured to host <a href="https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/standalone.html">TripleO Standalone</a>
-with Ceph.</p>
-<p>Configure the repositories and install the necessary packages.
-<div class="highlight"><pre><span></span><code>sudo dnf remove -y epel-release
-sudo dnf update -y
-sudo dnf install -y vim git curl util-linux lvm2 tmux wget
-URL=https://trunk.rdoproject.org/centos9/component/tripleo/current/
-RPM_NAME=$(curl $URL | grep python3-tripleo-repos | sed -e &#39;s/&lt;[^&gt;]*&gt;//g&#39; | awk &#39;BEGIN { FS = &quot;.rpm&quot; } ; { print $1 }&#39;)
-RPM=$RPM_NAME.rpm
-sudo dnf install -y $URL$RPM
-sudo -E tripleo-repos -b wallaby current-tripleo-dev ceph --stream
-sudo dnf repolist
-sudo dnf update -y
-sudo dnf install -y podman python3-tripleoclient util-linux lvm2 cephadm
-</code></pre></div>
-Set the hostname.
-<div class="highlight"><pre><span></span><code>sudo hostnamectl set-hostname standalone.localdomain
-sudo hostnamectl set-hostname standalone.localdomain --transient
-</code></pre></div>
-Create a containers-prepare-parameters.yaml file.
-<div class="highlight"><pre><span></span><code>openstack tripleo container image prepare default \
-  --output-env-file $HOME/containers-prepare-parameters.yaml
-</code></pre></div></p>
-<h3 id="networking">Networking<a class="headerlink" href="#networking" title="Permanent link">#</a></h3>
-<p>Use os-net-config to add VLAN interfaces which connect edpm-compute-0
-to the isolated networks configured by <code>install_yamls</code>.
-<div class="highlight"><pre><span></span><code>export GATEWAY=192.168.122.1
-export CTLPLANE_IP=192.168.122.100
-export INTERNAL_IP=$(sed -e &#39;s/192.168.122/172.17.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
-export STORAGE_IP=$(sed -e &#39;s/192.168.122/172.18.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
-export STORAGE_MGMT_IP=$(sed -e &#39;s/192.168.122/172.20.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
-export TENANT_IP=$(sed -e &#39;s/192.168.122/172.19.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
-export EXTERNAL_IP=$(sed -e &#39;s/192.168.122/172.21.0/&#39; &lt;&lt;&lt;&quot;$CTLPLANE_IP&quot;)
-
-sudo mkdir -p /etc/os-net-config
-cat &lt;&lt; EOF | sudo tee /etc/os-net-config/config.yaml
-network_config:
-- type: ovs_bridge
-  name: br-ctlplane
-  mtu: 1500
-  use_dhcp: false
-  dns_servers:
-  - $GATEWAY
-  domain: []
-  addresses:
-  - ip_netmask: $CTLPLANE_IP/24
-  routes:
-  - ip_netmask: 0.0.0.0/0
-    next_hop: $GATEWAY
-  members:
-  - type: interface
-    name: nic1
-    mtu: 1500
-    # force the MAC address of the bridge to this interface
-    primary: true
-
-  # external
-  - type: vlan
-    mtu: 1500
-    vlan_id: 44
-    addresses:
-    - ip_netmask: $EXTERNAL_IP/24
-    routes: []
-
-  # internal
-  - type: vlan
-    mtu: 1500
-    vlan_id: 20
-    addresses:
-    - ip_netmask: $INTERNAL_IP/24
-    routes: []
-
-  # storage
-  - type: vlan
-    mtu: 1500
-    vlan_id: 21
-    addresses:
-    - ip_netmask: $STORAGE_IP/24
-    routes: []
-
-  # storage_mgmt
-  - type: vlan
-    mtu: 1500
-    vlan_id: 23
-    addresses:
-    - ip_netmask: $STORAGE_MGMT_IP/24
-    routes: []
-
-  # tenant
-  - type: vlan
-    mtu: 1500
-    vlan_id: 22
-    addresses:
-    - ip_netmask: $TENANT_IP/24
-    routes: []
-EOF
-
-cat &lt;&lt; EOF | sudo tee /etc/cloud/cloud.cfg.d/99-edpm-disable-network-config.cfg
-network:
-  config: disabled
-EOF
-
-sudo systemctl enable network
-sudo os-net-config -c /etc/os-net-config/config.yaml
-</code></pre></div></p>
-<p>The isolated networks from os-net-config config file above will
-be lost when <code>openstack tripleo deploy</code> is run because the default
-os-net-config template only has the Neutron public interface as a member.
-To prevent this, copy
-<a href="../development_environment_examples/standalone.j2">this standalone.j2 template file</a>
-(which retains the VLANs above) into tripleo-ansible's <code>tripleo_network_config</code> role.
-<div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/standalone.j2
-
-sudo cp standalone.j2 /usr/share/ansible/roles/tripleo_network_config/templates/standalone.j2
-</code></pre></div></p>
-<p>Assign VIPs to the networks created when os-net-config was run.
-The tenant network on vlan22 does not require a VIP.
-<div class="highlight"><pre><span></span><code>sudo ip addr add 172.17.0.2/32 dev vlan20
-sudo ip addr add 172.18.0.2/32 dev vlan21
-sudo ip addr add 172.20.0.2/32 dev vlan23
-sudo ip addr add 172.21.0.2/32 dev vlan44
-</code></pre></div></p>
-<h3 id="ntp-server">NTP Server<a class="headerlink" href="#ntp-server" title="Permanent link">#</a></h3>
-<p>Clock synchronization is important for both Ceph and OpenStack services, so
-both <code>ceph deploy</code> and <code>tripleo deploy</code> commands will make use of chrony to
-ensure the clock is properly in sync.</p>
-<p>We'll use the <code>NTP_SERVER</code> environmental variable to define the NTP server to
-use.</p>
-<p>If we are running alls these commands in a system inside the Red Hat network we
-should use the <code>clock.corp.redhat.com</code> server:</p>
-<div class="highlight"><pre><span></span><code>export NTP_SERVER=clock.corp.redhat.com
-</code></pre></div>
-<p>And when running it from our own systems outside of the Red Hat network we can
-use any available server:</p>
-<div class="highlight"><pre><span></span><code>export NTP_SERVER=pool.ntp.org
-</code></pre></div>
-<h3 id="ceph">Ceph<a class="headerlink" href="#ceph" title="Permanent link">#</a></h3>
-<p>These steps are based on <a href="https://docs.openstack.org/project-deploy-guide/tripleo-docs/latest/deployment/standalone.html">TripleO Standalone</a>
-to configure Ceph on the Standalone node to simulate an HCI or
-internal Ceph adoption. Ceph will be configured to use the Storage
-network (vlan21) and Storage Management network (vlan23). The storage
-management network, is not configured by default in an NG environment
-and does not need to be accessed by the NG environment as it is only
-used by Ceph (AKA the <code>cluster_network</code>) to make OSD replicas and NG
-will not be deploying Ceph. Post adoption this network will remain
-isolated and the Ceph cluster may be considered external.</p>
-<p>Assign the IP from vlan21 to a variable representing the Ceph IP.
-<div class="highlight"><pre><span></span><code>export CEPH_IP=172.18.0.100
-</code></pre></div>
-Create a block device with logical volumes to be used as an OSD.
-<div class="highlight"><pre><span></span><code>sudo dd if=/dev/zero of=/var/lib/ceph-osd.img bs=1 count=0 seek=7G
-sudo losetup /dev/loop3 /var/lib/ceph-osd.img
-sudo pvcreate /dev/loop3
-sudo vgcreate vg2 /dev/loop3
-sudo lvcreate -n data-lv2 -l +100%FREE vg2
-</code></pre></div>
-Create an OSD spec file which references the block device.
-<div class="highlight"><pre><span></span><code>cat &lt;&lt;EOF &gt; $HOME/osd_spec.yaml
-data_devices:
-  paths:
-    - /dev/vg2/data-lv2
-EOF
-</code></pre></div>
-Use the Ceph IP and OSD spec file to create a Ceph spec file which
-will describe the Ceph cluster in a format cephadm can parse.
-<div class="highlight"><pre><span></span><code>sudo openstack overcloud ceph spec \
-   --standalone \
-   --mon-ip $CEPH_IP \
-   --osd-spec $HOME/osd_spec.yaml \
-   --output $HOME/ceph_spec.yaml
-</code></pre></div>
-Create the ceph-admin user by passing the Ceph spec created earlier.
-<div class="highlight"><pre><span></span><code>sudo openstack overcloud ceph user enable \
-   --standalone \
-   $HOME/ceph_spec.yaml
-</code></pre></div>
-Though Ceph will be configured to run on a single host via the
---single-host-defaults option, this deployment only has a single OSD so
-it cannot replicate data even on the same host. Create an initial Ceph
-configuration to disable replication:
-<div class="highlight"><pre><span></span><code>cat &lt;&lt;EOF &gt; $HOME/initial_ceph.conf
-[global]
-osd pool default size = 1
-[mon]
-mon_warn_on_pool_no_redundancy = false
-EOF
-</code></pre></div>
-Use the files created in the previous steps to install Ceph. Use
-<a href="../development_environment_examples/network_data.yaml">this network_data.yaml file</a>
-so that Ceph uses the isolated networks for storage and storage management.</p>
-<p><div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/network_data.yaml
-
-sudo openstack overcloud ceph deploy \
-     --mon-ip $CEPH_IP \
-     --ceph-spec $HOME/ceph_spec.yaml \
-     --config $HOME/initial_ceph.conf \
-     --standalone \
-     --single-host-defaults \
-     --skip-hosts-config \
-     --skip-container-registry-config \
-     --skip-user-create \
-     --network-data network_data.yaml \
-     --ntp-server $NTP_SERVER \
-     --output $HOME/deployed_ceph.yaml
-</code></pre></div>
-Ceph should now be installed. Use <code>sudo cephadm shell -- ceph -s</code>
-to confirm the Ceph cluster health.</p>
-<h3 id="openstack">OpenStack<a class="headerlink" href="#openstack" title="Permanent link">#</a></h3>
-<p>Use the files created in the previous steps including
-<a href="../development_environment_examples/network_data.yaml">this network_data.yaml file</a>
-and
-<a href="../development_environment_examples/deployed_network.yaml">this deployed_network.yaml file</a>.
-The deployed_network.yaml file hard codes the IPs and VIPs configured
-from the Networking section.</p>
-<p>Create standalone_parameters.yaml file and deploy standalone OpenStack
-using the following commands.</p>
-<p>Remember that should have exported the <code>NTP_SERVER</code> environmental variable
-earlier in the process.</p>
-<div class="highlight"><pre><span></span><code>wget https://openstack-k8s-operators.github.io/data-plane-adoption/contributing/development_environment_examples/deployed_network.yaml
-
-export NEUTRON_INTERFACE=eth0
-export CTLPLANE_IP=192.168.122.100
-export CTLPLANE_VIP=192.168.122.99
-export CIDR=24
-export DNS_SERVERS=192.168.122.1
-export GATEWAY=192.168.122.1
-export BRIDGE=&quot;br-ctlplane&quot;
-
-cat &lt;&lt;EOF &gt; standalone_parameters.yaml
-parameter_defaults:
-  CloudName: $CTLPLANE_IP
-  ControlPlaneStaticRoutes:
-    - ip_netmask: 0.0.0.0/0
-      next_hop: $GATEWAY
-      default: true
-  Debug: true
-  DeploymentUser: $USER
-  DnsServers: $DNS_SERVERS
-  NtpServer: $NTP_SERVER
-  # needed for vip &amp; pacemaker
-  KernelIpNonLocalBind: 1
-  DockerInsecureRegistryAddress:
-  - $CTLPLANE_IP:8787
-  NeutronPublicInterface: $NEUTRON_INTERFACE
-  # domain name used by the host
-  NeutronDnsDomain: localdomain
-  # re-use ctlplane bridge for public net
-  NeutronBridgeMappings: datacentre:$BRIDGE
-  NeutronPhysicalBridge: $BRIDGE
-  StandaloneEnableRoutedNetworks: false
-  StandaloneHomeDir: $HOME
-  InterfaceLocalMtu: 1500
-  # Needed if running in a VM
-  NovaComputeLibvirtType: qemu
-  ValidateGatewaysIcmp: false
-  ValidateControllersIcmp: false
-EOF
-
-sudo openstack tripleo deploy \
-  --templates /usr/share/openstack-tripleo-heat-templates \
-  --standalone-role Standalone \
-  -e /usr/share/openstack-tripleo-heat-templates/environments/standalone/standalone-tripleo.yaml \
-  -e /usr/share/openstack-tripleo-heat-templates/environments/low-memory-usage.yaml \
-  -e /usr/share/openstack-tripleo-heat-templates/environments/cephadm/cephadm-rbd-only.yaml \
-  -e /usr/share/openstack-tripleo-heat-templates/environments/deployed-network-environment.yaml \
-  -e /usr/share/openstack-tripleo-heat-templates/environments/cinder-backup-active-active.yaml \
-  -e ~/containers-prepare-parameters.yaml \
-  -e standalone_parameters.yaml \
-  -e ~/deployed_ceph.yaml \
-  -e deployed_network.yaml \
-  -r /usr/share/openstack-tripleo-heat-templates/roles/Standalone.yaml \
-  -n network_data.yaml \
-  --local-ip=$CTLPLANE_IP/$CIDR \
-  --control-virtual-ip=$CTLPLANE_VIP \
-  --output-dir $HOME
-</code></pre></div>
 <h3 id="convenience-steps">Convenience steps<a class="headerlink" href="#convenience-steps" title="Permanent link">#</a></h3>
 <p>To make our life easier we can copy the deployment passwords we'll be using
 in the <a href="https://openstack-k8s-operators.github.io/data-plane-adoption/openstack/backend_services_deployment/">backend services deployment phase of the data plane adoption</a>.</p>
@@ -1274,14 +924,13 @@ sudo ip link set up dev vlan20
 <p>When the deployment of the Standalone OpenStack is finished, it's a
 good time to snapshot the machine, so that multiple Adoption attempts
 can be done without having to deploy from scratch.</p>
-<div class="highlight"><pre><span></span><code># Virtiofs share prevents snapshotting, detach it first.
-sudo virsh detach-device-alias edpm-compute-0 fs0 --live
-
-sudo virsh snapshot-create-as --atomic --domain edpm-compute-0 --name clean
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+make standalone_snapshot
 </code></pre></div>
 <p>And when you wish to revert the Standalone deployment to the
 snapshotted state:</p>
-<div class="highlight"><pre><span></span><code>sudo virsh snapshot-revert --domain edpm-compute-0 --snapshotname clean
+<div class="highlight"><pre><span></span><code>cd install_yamls/devsetup
+make standalone_revert
 </code></pre></div>
 <p>Similar snapshot could be done for the CRC virtual machine, but the
 developer environment reset on CRC side can be done sufficiently via
@@ -1463,7 +1112,7 @@ The same pattern can be applied to other services.</p>
   <small>
     
       Last update:
-      2023-06-28
+      2023-07-04
     
   </small>
 </div>
@@ -1504,10 +1153,10 @@ The same pattern can be applied to other services.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.suggest", "search.highlight", "search.share"], "search": "../../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"default": "latest", "provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.b425cdc4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.220ee61c.min.js"></script>
       
     
   </body>
